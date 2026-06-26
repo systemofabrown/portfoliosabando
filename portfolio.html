@@ -2077,6 +2077,32 @@
   const lenis = (typeof Lenis !== 'undefined') ? new Lenis({ lerp: 0.09, smoothWheel: true }) : null;
   window.__lenis = lenis;
 
+  /* Return-to-card: remember which project thumbnail the user opened so the
+     sub-page "Back to portfolio" link lands on that card, not the page top. */
+  (function () {
+    document.querySelectorAll('a[href^="projects/"]').forEach(a => {
+      a.addEventListener('click', () => {
+        try { sessionStorage.setItem('returnToProject', a.getAttribute('href')); } catch (e) {}
+      });
+    });
+    let ret = null;
+    try { ret = sessionStorage.getItem('returnToProject'); } catch (e) {}
+    if (!ret) return;
+    try { sessionStorage.removeItem('returnToProject'); } catch (e) {}
+    const card = document.querySelector('.project[href="' + ret + '"]')
+              || document.querySelector('a[href="' + ret + '"]');
+    if (!card) return;
+    const jump = () => {
+      card.classList.add('in');                       // make sure it's revealed
+      const off = -Math.round(window.innerHeight * 0.22);
+      if (lenis) lenis.scrollTo(card, { offset: off, immediate: true });
+      else card.scrollIntoView({ block: 'center' });
+    };
+    requestAnimationFrame(() => requestAnimationFrame(jump));
+    setTimeout(jump, 250);                             // settle after images load
+    window.addEventListener('load', jump);
+  })();
+
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');
