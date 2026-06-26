@@ -1538,11 +1538,7 @@
   }
   /* mouse-driven particle layer (above the render/grain, below content) */
   #fxParticles {
-    position: fixed;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    will-change: transform;
+    display: none;
   }
 
   /* ============================================================
@@ -2346,7 +2342,6 @@
     if (lenis) lenis.raf(now);
     if (_heroVisible) compass.update();
     if (_filmVisible) film.update();
-    particles.update(now);
     requestAnimationFrame(raf);
   })(performance.now());
 
