@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Animation - Erick Sabando</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: radial-gradient(ellipse 120% 90% at 50% -10%, #2a2a2f, #121214 72%);
+    color: #f2f2f5;
+    font-family: "Archivo", system-ui, sans-serif;
+    display: flex; flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.6rem clamp(1.5rem, 4vw, 3.5rem);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+  }
+  .back {
+    font-family: "Geist Mono", monospace; font-size: 0.76rem; text-transform: uppercase;
+    letter-spacing: 0.18em; color: #d11a35; text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease; display: inline-block;
+  }
+  .back:hover { color: #fff; transform: translateX(-3px); }
+  .brand {
+    font-family: "Geist Mono", monospace; font-size: 0.74rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(242,242,245,0.6);
+  }
+  main {
+    flex: 1; display: flex; flex-direction: column; justify-content: flex-start;
+    padding: clamp(3rem, 7vw, 5rem) clamp(1.5rem, 4vw, 3.5rem) 7rem; width: 100%; max-width: 1200px;
+  }
+  .eyebrow {
+    font-family: "Geist Mono", monospace; color: #d11a35; text-transform: uppercase;
+    letter-spacing: 0.22em; font-size: 0.8rem; margin-bottom: 1rem;
+  }
+  h1 {
+    font-family: "Anton", "Impact", sans-serif; text-transform: uppercase;
+    font-size: clamp(3rem, 13vw, 9rem); line-height: 0.9; letter-spacing: 0.02em;
+  }
+  .lead {
+    margin-top: 1.6rem; max-width: 56ch; color: rgba(242,242,245,0.72);
+    font-size: 1.12rem; line-height: 1.65;
+  }
+  .videos { display: flex; flex-wrap: wrap; gap: 1.6rem; margin-top: 2.6rem; align-items: flex-start; }
+  .vid { border-radius: 12px; overflow: hidden; background: #000;
+    border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 16px 44px rgba(0,0,0,0.45); }
+  .vid iframe { display: block; width: 100%; height: 100%; border: 0; }
+  .vid-wide { flex: 1 1 560px; max-width: 860px; aspect-ratio: 16 / 9; }
+  .vid-short { flex: 0 0 300px; max-width: 300px; aspect-ratio: 9 / 16; }
+  .vid-cap { margin-top: 0.6rem; font-family: "Geist Mono", monospace; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.16em; color: rgba(242,242,245,0.55); }
+  @media (max-width: 640px) { .vid-wide, .vid-short { flex-basis: 100%; max-width: 100%; } }
+  footer {
+    padding: 1.4rem clamp(1.5rem, 4vw, 3.5rem); border-top: 1px solid rgba(255,255,255,0.10);
+    font-family: "Geist Mono", monospace; font-size: 0.72rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #d11a35;
+  }
+  /* mobile-subpage */
+  @media (max-width: 560px) {
+    header { padding: 1.1rem 1.25rem; }
+    .brand { display: none; }
+    main { padding-left: 1.25rem; padding-right: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <a class="back" href="../portfolio.html">&larr; Back to portfolio</a>
+    <span class="brand">Erick Sabando &middot; Arch Designer</span>
+  </header>
+  <main>
+    <div class="eyebrow">[ Animation &middot; Time-Based Media ]</div>
+    <h1>Animation</h1>
+    <p class="lead">Motion and time-based media - animation reels and shorts.</p>
+    <div class="videos">
+      <div class="vid vid-wide">
+        <iframe src="https://www.youtube.com/embed/RU6dE8xi6Kw" title="Animation reel"
+          loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="vid vid-short">
+        <iframe src="https://www.youtube.com/embed/ZO77mt4I2gc" title="Animation short"
+          loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </div>
+  </main>
+  <footer>&copy; 2025 - Erick Sabando</footer>
+</body>
+</html>

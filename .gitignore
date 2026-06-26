@@ -1,0 +1,7 @@
+# Heavy source files the website never loads (Blender, etc.) - keep out of the repo
+3d Models/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini

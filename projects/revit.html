@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Revit - Erick Sabando</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: radial-gradient(ellipse 120% 90% at 50% -10%, #2a2a2f, #121214 72%);
+    color: #f2f2f5;
+    font-family: "Archivo", system-ui, sans-serif;
+    display: flex; flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.6rem clamp(1.5rem, 4vw, 3.5rem);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+  }
+  .back {
+    font-family: "Geist Mono", monospace; font-size: 0.76rem; text-transform: uppercase;
+    letter-spacing: 0.18em; color: #d11a35; text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease; display: inline-block;
+  }
+  .back:hover { color: #fff; transform: translateX(-3px); }
+  .brand {
+    font-family: "Geist Mono", monospace; font-size: 0.74rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(242,242,245,0.6);
+  }
+  main {
+    flex: 1; display: flex; flex-direction: column; justify-content: flex-start;
+    padding: clamp(3rem, 7vw, 5rem) clamp(1.5rem, 4vw, 3.5rem) 7rem; width: 100%; max-width: 1200px;
+  }
+  .eyebrow {
+    font-family: "Geist Mono", monospace; color: #d11a35; text-transform: uppercase;
+    letter-spacing: 0.22em; font-size: 0.8rem; margin-bottom: 1rem;
+  }
+  h1 {
+    font-family: "Anton", "Impact", sans-serif; text-transform: uppercase;
+    font-size: clamp(3rem, 13vw, 9rem); line-height: 0.9; letter-spacing: 0.02em;
+  }
+  .lead {
+    margin-top: 1.4rem; max-width: 56ch; color: rgba(242,242,245,0.72);
+    font-size: 1.12rem; line-height: 1.65;
+  }
+  /* project thumbnail (matches the "Things I'm proud of" cards) */
+  .work-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+  .card { text-decoration: none; color: inherit; display: block; max-width: 480px; }
+  .card-visual {
+    aspect-ratio: 16/10; border-radius: 12px; overflow: hidden; position: relative;
+    border: 1px solid rgba(255,255,255,0.20); background: #f4f1ea;
+    box-shadow: 0 12px 34px rgba(0,0,0,0.34);
+    opacity: 0.85; transition: opacity .4s ease, transform .4s ease, border-color .4s ease;
+  }
+  .card:hover .card-visual { opacity: 1; transform: scale(1.03); border-color: rgba(255,255,255,0.42); }
+  .card-visual img { width: 100%; height: 100%; object-fit: cover; }
+  .card-tag {
+    position: absolute; top: 1rem; left: 1rem; font-family: "Geist Mono", monospace;
+    font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.16em; color: #fff;
+    background: rgba(14,14,17,0.6); border: 1px solid rgba(255,255,255,0.28); border-radius: 999px;
+    padding: 0.34rem 0.8rem; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  }
+  .card-year { position: absolute; bottom: 1rem; right: 1rem; font-family: "Geist Mono", monospace;
+    font-size: 0.72rem; color: rgba(255,255,255,0.85); }
+  .card-title { font-family: "Anton", Impact, sans-serif; text-transform: uppercase;
+    font-size: 1.7rem; letter-spacing: 0.015em; margin-top: 1rem; }
+  .card-desc { color: rgba(242,242,245,0.7); margin-top: 0.4rem; font-size: 0.95rem; }
+  footer {
+    padding: 1.4rem clamp(1.5rem, 4vw, 3.5rem); border-top: 1px solid rgba(255,255,255,0.10);
+    font-family: "Geist Mono", monospace; font-size: 0.72rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #d11a35;
+  }
+  /* mobile-subpage */
+  @media (max-width: 560px) {
+    header { padding: 1.1rem 1.25rem; }
+    .brand { display: none; }
+    main { padding-left: 1.25rem; padding-right: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <a class="back" href="../portfolio.html">&larr; Back to portfolio</a>
+    <span class="brand">Erick Sabando &middot; Arch Designer</span>
+  </header>
+  <main>
+    <div class="eyebrow">[ Selected Work ]</div>
+    <h1>Revit</h1>
+    <p class="lead">BIM-based architectural design - documentation, modeling, and rendered light
+      studies built in Autodesk Revit.</p>
+    <div class="work-grid">
+      <a class="card" href="hillside-daycare.html">
+        <div class="card-visual">
+          <img src="hillside-daycare/cover.jpg" alt="Hillside Daycare" />
+          <span class="card-tag">Revit &middot; Daycare</span>
+          <span class="card-year">2026</span>
+        </div>
+        <div class="card-title">Hillside Daycare</div>
+        <div class="card-desc">Seven-module studio project - plans, elevations, site, and rendered light studies.</div>
+      </a>
+      <a class="card" href="main-street-pavilion.html">
+        <div class="card-visual">
+          <img src="main-street-pavilion/cover.jpg" alt="Main Street Pavilion" />
+          <span class="card-tag">Revit &middot; Pavilion</span>
+          <span class="card-year">2025</span>
+        </div>
+        <div class="card-title">Main Street Pavilion</div>
+        <div class="card-desc">Civic pavilion in Autodesk Revit - full construction set with renderings.</div>
+      </a>
+    </div>
+  </main>
+  <footer>&copy; 2025 - Erick Sabando</footer>
+</body>
+</html>

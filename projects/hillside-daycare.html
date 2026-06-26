@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hillside Daycare - Erick Sabando</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --red: #d11a35; --fg: #f2f2f5; }
+  body {
+    min-height: 100vh;
+    background: radial-gradient(ellipse 120% 90% at 50% -10%, #2a2a2f, #111113 72%);
+    color: var(--fg);
+    font-family: "Archivo", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem clamp(1.5rem, 4vw, 3.5rem);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(17,17,19,0.72);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  }
+  .back { font-family: "Geist Mono", monospace; font-size: 0.76rem; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--red); text-decoration: none;
+    transition: color .3s ease, transform .3s ease; }
+  .back:hover { color: #fff; transform: translateX(-3px); }
+  .brand { font-family: "Geist Mono", monospace; font-size: 0.74rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(242,242,245,0.6); }
+
+  .hero { padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 4vw, 3.5rem) 2rem; max-width: 1280px; }
+  .eyebrow { font-family: "Geist Mono", monospace; color: var(--red); text-transform: uppercase;
+    letter-spacing: 0.22em; font-size: 0.8rem; margin-bottom: 1rem; }
+  h1 { font-family: "Anton", Impact, sans-serif; text-transform: uppercase;
+    font-size: clamp(3rem, 12vw, 8rem); line-height: 0.9; letter-spacing: 0.02em; }
+  .lead { margin-top: 1.4rem; max-width: 62ch; color: rgba(242,242,245,0.74);
+    font-size: 1.1rem; line-height: 1.65; }
+  .meta { margin-top: 1.4rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem;
+    font-family: "Geist Mono", monospace; font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.14em; color: rgba(242,242,245,0.55); }
+  .meta b { color: var(--red); font-weight: 500; }
+
+  .grid {
+    max-width: 1280px;
+    padding: 1.5rem clamp(1.5rem, 4vw, 3.5rem) 6rem;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;
+  }
+  .mod { text-decoration: none; color: inherit; display: block; }
+  .mod-visual {
+    aspect-ratio: 16 / 10; border-radius: 12px; overflow: hidden; position: relative;
+    border: 1px solid rgba(255,255,255,0.20); background: #f4f1ea;
+    box-shadow: 0 12px 34px rgba(0,0,0,0.34);
+    opacity: 0.86; transition: opacity .4s ease, transform .4s var(--ease, ease), border-color .4s ease;
+  }
+  .mod:hover .mod-visual { opacity: 1; transform: scale(1.03); border-color: rgba(255,255,255,0.42); }
+  .mod-visual img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  .mod-num {
+    position: absolute; top: 0.9rem; left: 0.9rem;
+    font-family: "Geist Mono", monospace; font-size: 0.64rem; text-transform: uppercase;
+    letter-spacing: 0.16em; color: #fff; background: rgba(14,14,17,0.6);
+    border: 1px solid rgba(255,255,255,0.28); border-radius: 999px; padding: 0.32rem 0.75rem;
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  }
+  .mod-title { font-family: "Anton", Impact, sans-serif; text-transform: uppercase;
+    font-size: 1.5rem; letter-spacing: 0.015em; margin-top: 1rem; line-height: 1; }
+  .mod-open { margin-top: 0.5rem; font-family: "Geist Mono", monospace; font-size: 0.72rem;
+    text-transform: uppercase; letter-spacing: 0.16em; color: var(--red);
+    transition: transform .3s ease; }
+  .mod:hover .mod-open { transform: translateX(4px); }
+
+  footer { padding: 1.4rem clamp(1.5rem, 4vw, 3.5rem); border-top: 1px solid rgba(255,255,255,0.10);
+    font-family: "Geist Mono", monospace; font-size: 0.72rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--red); }
+  /* mobile-subpage */
+  @media (max-width: 560px) {
+    header { padding: 1.1rem 1.25rem; }
+    .brand { display: none; }
+    main { padding-left: 1.25rem; padding-right: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <a class="back" href="revit.html">&larr; Back to Revit</a>
+    <span class="brand">Erick Sabando &middot; Arch Designer</span>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">[ Revit &middot; Studio Project ]</div>
+    <h1>Hillside Daycare</h1>
+    <p class="lead">A daycare nestled into a hillside, developed in Revit across seven modules -
+      from floor plans and program through elevations, the site and stairs, rendered light
+      studies, and a final set of play-piece details. Each module opens as a PDF.</p>
+    <div class="meta">
+      <span><b>Type</b> Daycare / Early-Childhood</span>
+      <span><b>Tool</b> Autodesk Revit</span>
+      <span><b>Course</b> ARC 494</span>
+      <span><b>Modules</b> 7</span>
+    </div>
+  </section>
+
+  <main class="grid">
+    <a class="mod" href="hillside-daycare/module-1.pdf" target="_blank" rel="noopener">
+      <div class="mod-visual"><img src="hillside-daycare/thumb-1.png" alt="Module 1 - Floor Plans &amp; Program" /><span class="mod-num">Module 01</span></div>
+      <div class="mod-title">Floor Plans &amp; Program</div>
+      <div class="mod-open">Open PDF &rarr;</div>
+    </a>
+    <a class="mod" href="hillside-daycare/module-2.pdf" target="_blank" rel="noopener">
+      <div class="mod-visual"><img src="hillside-daycare/thumb-2.png" alt="Module 2 - Plans, Elevations &amp; Section" /><span class="mod-num">Module 02</span></div>
+      <div class="mod-title">Plans, Elevations &amp; Section</div>
+      <div class="mod-open">Open PDF &rarr;</div>
+    </a>
+    <a class="mod" href="hillside-daycare/module-3.pdf" target="_blank" rel="noopener">
+      <div class="mod-visual"><img src="hillside-daycare/thumb-3.png" alt="Module 3 - Elevations &amp; Exterior Views" /><span class="mod-num">Module 03</span></div>
+      <div class="mod-title">Elevations &amp; Exterior Views</div>
+      <div class="mod-open">Open PDF &rarr;</div>
+    </a>
+    <a class="mod" href="hillside-daycare/module-4.pdf" target="_blank" rel="noopener">
+      <div class="mod-visual"><img src="hillside-daycare/thumb-4.png" alt="Module 4 - Site Plan &amp; Stairs" /><span class="mod-num">Module 04</span></div>
+      <div class="mod-title">Site Plan &amp; Stairs</div>
+      <div class="mod-open">Open PDF &rarr;</div>
+    </a>
+    <a class="mod" href="hillside-daycare/module-5.pdf" target="_blank" rel="noopener">
+      <div class="mod-visual"><img src="hillside-daycare/thumb-5.png" alt="Module 5 - Light-Study Renderings" /><span class="mod-num">Module 05</span></div>
+      <div class="mod-title">Light-Study Renderings</div>
+      <div class="mod-open">Open PDF &rarr;</div>
+    </a>
+    <a class="mod" href="hillside-daycare/module-6.pdf" target="_blank" rel="noopener">
+      <div class="mod-visual"><img src="hillside-daycare/thumb-6.png" alt="Module 6 - Renders, Ceiling Plan &amp; Section" /><span class="mod-num">Module 06</span></div>
+      <div class="mod-title">Renders, Ceiling Plan &amp; Section</div>
+      <div class="mod-open">Open PDF &rarr;</div>
+    </a>
+    <a class="mod" href="hillside-daycare/module-7.pdf" target="_blank" rel="noopener">
+      <div class="mod-visual"><img src="hillside-daycare/thumb-7.png" alt="Module 7 - Play Pieces &amp; Detail Section" /><span class="mod-num">Module 07</span></div>
+      <div class="mod-title">Play Pieces &amp; Detail Section</div>
+      <div class="mod-open">Open PDF &rarr;</div>
+    </a>
+  </main>
+
+  <footer>&copy; 2025 - Erick Sabando</footer>
+</body>
+</html>

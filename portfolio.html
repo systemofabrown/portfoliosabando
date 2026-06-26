@@ -1,0 +1,2521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Erick Sabando - Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+<style>
+  :root {
+    /* Apple "liquid glass" theme - frosted dark glass over the render, light text */
+    --bg: #76756f;            /* grey to match the hero render */
+    --bg-elev: rgba(255, 255, 255, 0.06);
+    --fg: #f2f2f5;            /* light */
+    --fg-dim: rgba(242, 242, 245, 0.74);
+    --fg-muted: rgba(242, 242, 245, 0.48);
+    --line: rgba(255, 255, 255, 0.18);
+    --line-strong: rgba(255, 255, 255, 0.34);
+    --accent: #f4f4f7;        /* big titles read bright white */
+    --red: #d11a35;           /* crimson - small labels / brackets accent */
+    --ink: #0d0d0f;
+    --panel: rgba(22, 22, 26, 0.42);          /* frosted dark glass panel */
+    --glass: rgba(255, 255, 255, 0.10);       /* liquid-glass fill */
+    --glass-strong: rgba(255, 255, 255, 0.17);
+    --glass-tint: rgba(255, 255, 255, 0.06);
+    --display: "Anton", "Impact", "Haettenschweiler", sans-serif;   /* tall, bold, impactful */
+    --serif: "Archivo", system-ui, sans-serif;
+    --sans: "Archivo", system-ui, sans-serif;
+    --mono: "Geist Mono", ui-monospace, monospace;
+    --ease: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* Lenis drives smooth scrolling - native smooth behavior would fight it */
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  /* hide the native side scrollbar - the glass capsule is the only progress indicator */
+  html, body { scrollbar-width: none; -ms-overflow-style: none; }
+  html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
+  body {
+    color: var(--fg);
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.55;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Flat grey behind the render (the render itself is the only backdrop) */
+    background-color: var(--bg);
+  }
+
+  ::selection { background: var(--accent); color: #f2efe9; }
+
+  /* ============ Drafting sheet frame ============ */
+  /* A faint ruled border with corner registration marks, like a plate edge. */
+  .sheet-frame {
+    position: fixed;
+    inset: 13px;
+    border: 1px solid var(--line);
+    pointer-events: none;
+    z-index: 80;
+  }
+  .sheet-frame::before, .sheet-frame::after {
+    content: "";
+    position: absolute;
+    width: 15px; height: 15px;
+    border: 1.5px solid var(--fg-muted);
+  }
+  .sheet-frame::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+  .sheet-frame::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+  @media (max-width: 980px) { .sheet-frame { inset: 8px; } }
+
+  /* ============ NAV ============ */
+  nav.top {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.75rem 2.5rem;
+    background: transparent;
+    pointer-events: none;
+  }
+  /* frosted bar once the user scrolls - stops content showing through */
+  nav.top::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(to bottom, rgba(14, 14, 16, 0.7), rgba(14, 14, 16, 0));
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+    transition: opacity .45s var(--ease);
+  }
+  nav.top.scrolled::before { opacity: 1; }
+  /* liquid-glass scroll-progress capsule, centered just under the nav */
+  .scroll-progress {
+    position: fixed; left: 26px; top: 50%; transform: translateY(-50%);
+    width: 9px; height: clamp(160px, 34vh, 300px); z-index: 300;
+    border-radius: 999px; overflow: hidden; pointer-events: none;
+    background-color: rgba(255, 255, 255, 0.10);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.4'/%3E%3C/svg%3E");
+    background-size: 90px 90px; background-blend-mode: soft-light;
+    -webkit-backdrop-filter: blur(12px) saturate(150%); backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    box-shadow: inset 1px 0 1px rgba(255,255,255,0.55), inset -3px 0 6px rgba(0,0,0,0.16), 0 4px 14px rgba(0,0,0,0.22);
+  }
+  /* glossy glass sheen down the left, sits above the liquid */
+  .scroll-progress::before {
+    content: ""; position: absolute; top: 6%; bottom: 6%; left: 1px; width: 42%; z-index: 3;
+    border-radius: 999px; pointer-events: none; opacity: 0.7;
+    background: linear-gradient(to right, rgba(255,255,255,0.6), rgba(255,255,255,0));
+  }
+  /* the liquid that rises with scroll */
+  .scroll-progress-fill {
+    position: absolute; top: 0; right: 0; bottom: 0; left: 0; transform-origin: 50% 0%; transform: scaleY(0); z-index: 1;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.42);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='70' height='70'%3E%3Cfilter id='pf'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23pf)' opacity='0.4'/%3E%3C/svg%3E");
+    background-size: 130px 130px; background-blend-mode: soft-light;
+    box-shadow: inset 1px 0 1px rgba(255,255,255,0.85), 0 0 8px rgba(255,255,255,0.30);
+    transition: transform 0.12s linear;
+  }
+  /* bright meniscus at the rising top edge */
+  .scroll-progress-fill::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 7px; z-index: 2;
+    border-radius: 999px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.7));
+  }
+  nav.top > * { pointer-events: auto; }
+
+  .location {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--red);
+    transition: opacity .55s var(--ease), transform .55s var(--ease);
+  }
+  /* dissolves once you scroll past the hero */
+  nav.top.past-hero .location { opacity: 0; transform: translateY(-8px); pointer-events: none; }
+  .location-icon {
+    width: 15px;
+    height: 15px;
+    color: var(--accent);
+    flex-shrink: 0;
+    animation: globeSpin 14s linear infinite;
+    transform-origin: center;
+  }
+  @keyframes globeSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  nav.top ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+  /* nav items: plain text that glows + enlarges on hover */
+  nav.top ul a {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.12rem;
+    font-weight: 400;
+    color: var(--fg-dim);
+    text-decoration: none;
+    display: inline-block;
+    transition: color 0.3s var(--ease), transform 0.3s var(--ease-out), text-shadow 0.3s var(--ease);
+  }
+  nav.top ul a:hover {
+    color: #fff;
+    transform: scale(1.16);
+    text-shadow: 0 0 18px rgba(255, 255, 255, 0.55), 0 0 6px rgba(255, 255, 255, 0.4);
+  }
+  /* current section - highlighted + enlarged */
+  nav.top ul a.active {
+    color: #fff;
+    transform: scale(1.2);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 0 7px rgba(255, 255, 255, 0.45);
+  }
+  /* Work item: hover reveals a dropdown of every project */
+  .nav-work { position: relative; }
+  .work-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-top: 12px;
+    transform: translateX(-50%) translateY(6px);
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    padding: 0.55rem;
+    background: rgba(18, 18, 20, 0.72);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 14px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .3s var(--ease), transform .3s var(--ease-out), visibility .3s;
+  }
+  /* invisible bridge across the gap so hover doesn't drop */
+  .work-menu::before { content: ""; position: absolute; top: -14px; left: 0; right: 0; height: 14px; }
+  .nav-work:hover .work-menu,
+  .nav-work:focus-within .work-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  nav.top .work-menu a {
+    font-family: var(--sans);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-transform: none;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    color: var(--fg-dim);
+    padding: 0.55rem 0.85rem;
+    border-radius: 8px;
+  }
+  nav.top .work-menu a:hover {
+    color: #fff;
+    transform: none;
+    background: rgba(255, 255, 255, 0.08);
+    text-shadow: none;
+  }
+
+  /* ===== Mobile hamburger + full-screen menu ===== */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px; height: 44px;
+    padding: 10px;
+    background: none; border: 0; cursor: pointer;
+  }
+  .nav-toggle span {
+    display: block; height: 2px; width: 100%;
+    background: var(--fg); border-radius: 2px;
+    transition: transform .35s var(--ease-out), opacity .25s var(--ease);
+  }
+  .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    position: fixed; inset: 0; z-index: 90;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(12, 12, 14, 0.9);
+    -webkit-backdrop-filter: blur(22px) saturate(140%);
+    backdrop-filter: blur(22px) saturate(140%);
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity .4s var(--ease), visibility .4s;
+  }
+  .mobile-menu.open { opacity: 1; visibility: visible; pointer-events: auto; }
+  .mm-nav { display: flex; flex-direction: column; align-items: center; gap: 1.4rem; padding: 2rem; text-align: center; }
+  .mm-nav > a, .mm-head {
+    font-family: var(--serif); font-style: italic; font-size: 2rem;
+    color: var(--fg); text-decoration: none; transition: color .25s var(--ease);
+  }
+  .mm-nav > a:active, .mm-head:active { color: var(--red); }
+  .mm-group { display: flex; flex-direction: column; align-items: center; gap: 0.55rem; }
+  .mm-sub { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; margin-top: 0.1rem; }
+  .mm-sub a {
+    font-family: var(--mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--fg-dim); text-decoration: none;
+  }
+  .mm-sub a:active { color: var(--red); }
+  .mm-nav a.mm-cta {
+    margin-top: 1.2rem; font-family: var(--mono); font-style: normal; font-size: 0.82rem;
+    text-transform: uppercase; letter-spacing: 0.16em; color: #fff;
+    border: 1px solid rgba(255,255,255,0.4); border-radius: 999px; padding: 0.85rem 2rem;
+    background: rgba(255,255,255,0.1);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  }
+
+  /* ===== Frosted water-droplet glass - the two CTAs (fixed pill shape) ===== */
+  .nav-cta, .contact-cta, .download-cta {
+    position: relative;
+    overflow: hidden;
+    border-radius: 999px;
+    text-decoration: none;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.07);
+    -webkit-backdrop-filter: blur(1px) saturate(155%) brightness(1.08) url(#glassDistort);
+    backdrop-filter: blur(1px) saturate(155%) brightness(1.08) url(#glassDistort);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow:
+      inset 0 1px 1.5px rgba(255, 255, 255, 0.9),
+      inset 0 -8px 18px rgba(255, 255, 255, 0.06),
+      inset 0 0 18px rgba(255, 255, 255, 0.10),
+      0 10px 30px rgba(0, 0, 0, 0.34);
+    transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease), background-color 0.4s var(--ease);
+  }
+  /* soft specular sheen for the liquid-glass look */
+  .nav-cta::before, .contact-cta::before, .download-cta::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.06) 30%, transparent 52%);
+    opacity: 0.7; mix-blend-mode: screen;
+  }
+  .nav-cta:hover, .contact-cta:hover, .download-cta:hover {
+    transform: translateY(-2px);
+    background-color: rgba(255, 255, 255, 0.18);
+    box-shadow:
+      inset 0 1px 2px rgba(255, 255, 255, 0.85),
+      inset 0 -10px 18px rgba(0, 0, 0, 0.16),
+      0 14px 38px rgba(0, 0, 0, 0.38);
+  }
+  /* GET IN TOUCH sizing */
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    padding: 0.7rem 1.3rem;
+  }
+
+  /* ============ HERO - drafting plate with a scroll-scrubbed compass ============ */
+  /* Tall outer section, sticky 100vh stage. The extra scroll distance scrubs a
+     PNG sequence of a drafting compass: the steel point stays planted at centre
+     while the pencil leg sweeps round and strikes a circle in sanguine. */
+  .hero {
+    position: relative;
+    z-index: 3;
+    min-height: 100vh;
+    width: 100%;
+    padding: 0;                /* override global section padding so PORTFOLIO hits the bottom */
+  }
+  .hero-stage {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;                /* PORTFOLIO + name sit at the bottom of the landing */
+    padding: 0 clamp(2.5rem, 6vw, 6rem) clamp(1.2rem, 3vh, 2.4rem) clamp(0.75rem, 1.5vw, 1.5rem);
+    overflow: hidden;
+  }
+
+  .hero-copy {
+    position: relative;
+    z-index: 5;
+    max-width: 60rem;
+    margin-top: 0;
+    padding-left: clamp(1.5rem, 3.5vw, 3rem);   /* nudge the landing text right */
+  }
+  /* tall, bold, Impact-style PORTFOLIO - anchored to the bottom */
+  .hero-portfolio {
+    font-family: var(--display);
+    font-weight: 400;                 /* Anton is a single heavy weight */
+    color: rgba(255, 255, 255, 0.12);   /* clear liquid-glass letters - render shows through */
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.6);
+    font-size: clamp(3.5rem, 15vw, 11rem);
+    line-height: 0.86;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    margin: 0;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5), 0 4px 24px rgba(0,0,0,0.4), 0 0 26px rgba(255,255,255,0.18);
+  }
+  /* name + title row */
+  .hero-id {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.3rem;
+    margin-top: 0.7rem;       /* sits just under PORTFOLIO, at the very bottom */
+    margin-bottom: 0;
+  }
+  .hero-name {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+    color: var(--fg);
+    letter-spacing: 0.005em;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+  }
+  .hero-title {
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    color: var(--red);
+    border-left: 2px solid var(--red);
+    padding-left: 0.85rem;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+  }
+
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.8rem; }
+
+  /* Matte glass button - frosted, blurs the render behind it, no gloss */
+  .draft-btn {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--fg);
+    text-decoration: none;
+    padding: 0.95rem 1.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    border-radius: 999px;
+    background: rgba(28, 28, 32, 0.34);
+    -webkit-backdrop-filter: blur(16px) saturate(125%);
+    backdrop-filter: blur(16px) saturate(125%);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.28);
+    transition: transform 0.4s var(--ease-out), background 0.4s var(--ease), border-color 0.4s var(--ease);
+  }
+  .draft-btn:hover {
+    background: rgba(48, 48, 54, 0.46);
+    border-color: rgba(255, 255, 255, 0.34);
+    transform: translateY(-2px);
+  }
+  .draft-btn.solid {
+    background: rgba(244, 244, 247, 0.86);
+    color: #16161a;
+    border-color: rgba(255, 255, 255, 0.55);
+  }
+  .draft-btn.solid:hover { background: rgba(255, 255, 255, 0.95); color: #0d0d0f; }
+
+  /* The model animation is a FIXED full-page backdrop, scrubbed across the whole
+     scroll. Content panels float over it; grain + vignette sit just above it. */
+  #heroCompass {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    filter: contrast(1.2) brightness(0.96) saturate(1.05);
+    opacity: 0;
+    animation: compassFade 1.8s var(--ease-out) 0.2s forwards;
+  }
+  @keyframes compassFade { to { opacity: 1; } }
+  /* Cinematic dark-edge vignette over the animation */
+  .fx-vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    /* subtle vignette across the whole page */
+    background:
+      radial-gradient(ellipse 115% 115% at 50% 48%, transparent 38%, rgba(0, 0, 0, 0.32) 72%, rgba(0, 0, 0, 0.64) 100%);
+  }
+  /* Cinematic film grain - lightweight (no blend-mode), subtle animated boil */
+  .fx-grain {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.09;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    background-repeat: repeat;
+    animation: grainBoil 0.5s steps(1) infinite;
+  }
+  @keyframes grainBoil {
+    0%   { background-position: 0 0; opacity: 0.07; }
+    33%  { background-position: -7px 5px; opacity: 0.11; }
+    66%  { background-position: 5px -6px; opacity: 0.07; }
+    100% { background-position: -4px -3px; opacity: 0.10; }
+  }
+  @media (prefers-reduced-motion: reduce) { .fx-grain { animation: none; } }
+
+  /* Entrance - copy rises in once on load */
+  .hero-copy > * {
+    opacity: 0;
+    transform: translateY(26px);
+    animation: heroRise 1.2s var(--ease-out) forwards;
+  }
+  .hero-copy .hero-portfolio { animation-delay: 0.15s; }
+  .hero-copy .hero-id { animation-delay: 0.38s; }
+  .hero-copy .hero-actions { animation-delay: 0.55s; }
+  @keyframes heroRise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .scroll-cta.dim { opacity: 0 !important; pointer-events: none; animation-play-state: paused; }
+  .scroll-cta { transition: opacity 0.7s var(--ease); }
+
+  /* ============ FILM - scroll-scrubbed cinematic ============ */
+  /* Tall outer section, sticky 100vh stage inside. Scroll progress scrubs a
+     1080p frame sequence on the canvas - the architectural render now lives
+     here, as the opening frame of the film. */
+  .film {
+    height: 460vh;
+    padding: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .film-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+  #filmCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    /* Frames are pre-toned to sepia on parchment (gen_film_ink.py) */
+    filter: contrast(1.02);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 9%, #000 88%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, #000 9%, #000 88%, transparent 100%);
+  }
+  .film-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 120% 90% at 50% 50%, transparent 58%, rgba(74, 56, 34, 0.24) 100%);
+  }
+  .film-tag {
+    position: absolute;
+    top: 7rem;
+    left: 2.75rem;
+    z-index: 3;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--fg-dim);
+    text-shadow: 0 1px 10px rgba(231, 224, 206, 0.85);
+  }
+  .film-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    pointer-events: none;
+    padding: 0 2rem;
+  }
+  .film-line {
+    grid-area: 1 / 1;
+    opacity: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2.4rem, 6vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--fg);
+    text-shadow: 0 2px 26px rgba(231, 224, 206, 0.92), 0 1px 4px rgba(231, 224, 206, 0.8);
+    will-change: opacity, transform;
+  }
+  .film-line em { font-style: italic; color: var(--accent); }
+  .film-progress {
+    position: absolute;
+    bottom: 2.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    width: 180px;
+    height: 1px;
+    background: rgba(235, 231, 223, 0.18);
+  }
+  .film-progress span {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  /* Glass bubble aesthetic matching the other interactive elements. */
+  .to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 90;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--fg);
+    background: var(--bg);
+    border: 1px solid var(--line-strong);
+    box-shadow: inset 0 0 0 3px var(--bg), inset 0 0 0 4px var(--line), 0 10px 24px -12px rgba(43, 33, 24, 0.55);
+    /* Hidden by default - JS toggles .visible once you scroll past the hero */
+    opacity: 0;
+    transform: translateY(16px);
+    pointer-events: none;
+    transition:
+      opacity 0.5s var(--ease),
+      transform 0.5s var(--ease-out),
+      background 0.4s var(--ease),
+      border-color 0.4s var(--ease),
+      box-shadow 0.4s var(--ease);
+  }
+  .to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .to-top::before { content: none; }
+  .to-top svg {
+    width: 18px;
+    height: 18px;
+    color: var(--fg);
+    transition: transform 0.4s var(--ease-out);
+  }
+  .to-top:hover {
+    background: rgba(138, 58, 38, 0.08);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .to-top:hover svg { transform: translateY(-3px); }
+
+  /* ============ DOCUMENT MODAL ============ */
+  .doc-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2.5rem 2.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s var(--ease);
+  }
+  .doc-modal.open { opacity: 1; pointer-events: auto; }
+
+  /* Background washes match the site's near-black palette with a heavy blur,
+     so the modal feels native to the same canvas */
+  .doc-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(38, 28, 18, 0.55);
+    backdrop-filter: blur(14px) saturate(115%);
+    -webkit-backdrop-filter: blur(14px) saturate(115%);
+    cursor: pointer;
+  }
+
+  .doc-modal-shell {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 900px;
+    height: 100%;
+    max-height: calc(100vh - 6rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    transform: translateY(20px) scale(0.985);
+    transition: transform 0.5s var(--ease-out);
+  }
+  .doc-modal.open .doc-modal-shell { transform: translateY(0) scale(1); }
+
+  .doc-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 0 0.25rem;
+  }
+  .doc-modal-title {
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--fg);
+  }
+  .doc-modal-title em { font-style: italic; color: var(--fg-dim); }
+  .doc-modal-meta {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--fg-muted);
+    white-space: nowrap;
+  }
+
+  .doc-modal-frame {
+    flex: 1;
+    width: 100%;
+    background: var(--bg-elev);
+    border: 1px solid var(--line-strong);
+    border-radius: 0;
+    box-shadow: 0 30px 80px -30px rgba(43, 33, 24, 0.5);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .doc-modal-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .doc-modal-frame img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  .doc-modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0 0.25rem;
+  }
+  .doc-modal-action {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--fg);
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s var(--ease), border-color 0.3s var(--ease), background 0.3s var(--ease);
+  }
+  .doc-modal-action:hover {
+    border-color: var(--fg-dim);
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .doc-modal-action svg { width: 13px; height: 13px; }
+  .doc-modal-action.close { margin-left: auto; }
+
+  /* Disable body scroll when modal is open */
+  body.modal-open { overflow: hidden; }
+
+  @media (max-width: 980px) {
+    .doc-modal { padding: 5rem 1rem 1.25rem; }
+    .doc-modal-header { flex-direction: column; gap: 0.35rem; align-items: flex-start; }
+    .doc-modal-actions { flex-wrap: wrap; }
+  }
+
+  /* Centered scroll cue - minimal text + arrow, both pulsating. Sits low in the hero
+     as a direct invitation to scroll. No bubble, no border, no fill. */
+  .scroll-cta {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.32em;
+    color: var(--fg-dim);
+    text-decoration: none;
+    animation: scrollCtaPulse 2.2s ease-in-out infinite;
+    transition: letter-spacing 0.5s var(--ease), color 0.5s var(--ease);
+  }
+  .scroll-cta span { padding-left: 0.32em; /* counter trailing letter-spacing */ }
+  .scroll-cta-arrow {
+    width: 22px;
+    height: 22px;
+    color: var(--fg-dim);
+    animation: scrollCtaArrowBob 2.2s ease-in-out infinite;
+  }
+  @keyframes scrollCtaPulse {
+    0%, 100% { opacity: 0.55; }
+    50%      { opacity: 1; }
+  }
+  @keyframes scrollCtaArrowBob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(4px); }
+  }
+  .scroll-cta:hover {
+    letter-spacing: 0.4em;
+    animation-play-state: paused;
+    opacity: 1;
+  }
+  .scroll-cta:hover .scroll-cta-arrow { animation-play-state: paused; }
+
+  /* ============ SECTION SHARED ============ */
+  section {
+    padding: 8rem 2.5rem;
+    position: relative;
+    z-index: 3;     /* float above the fixed model backdrop (z 0) + grain/vignette */
+  }
+  /* Content panels: light translucent wash so the render shows through while
+     black body text stays readable. Hero has no panel.
+     (No backdrop-blur - too costly over a redrawing canvas.) */
+  /* Sections are transparent - the render shows through unobstructed.
+     A text-shadow keeps the light text legible over the moving render. */
+  section:not(.hero), footer {
+    background: transparent;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55), 0 2px 18px rgba(0, 0, 0, 0.45);
+  }
+  .section-head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: 3rem;
+    margin-bottom: 4rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px dashed var(--line-strong);
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+  }
+  .section-title em { font-style: italic; color: var(--fg-dim); }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* ============ ABOUT ============ */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .about-portrait {
+    aspect-ratio: 4/5;
+    background: var(--bg-elev);
+    border: 1px solid var(--line-strong);
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: end;
+    padding: 1.5rem;
+    box-shadow: 0 22px 50px -28px rgba(43, 33, 24, 0.6);
+  }
+  /* portrait stays translucent until you hover, then resolves to full */
+  .about-portrait::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url('portrait.jpg') center 18%/cover no-repeat;
+    filter: contrast(1.04) saturate(0.92);
+    opacity: 0.32;
+    transition: opacity 0.55s var(--ease);
+  }
+  .about-portrait:hover::before { opacity: 1; }
+  .about-portrait::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(36, 27, 18, 0.62), transparent 52%);
+  }
+  .portrait-caption {
+    position: relative;
+    z-index: 2;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #ece6d6;
+  }
+  .portrait-caption span { color: #c9bfa6; margin-right: 0.5rem; }
+
+  .about-prose p {
+    font-size: 1.4rem;
+    line-height: 1.5;
+    color: var(--fg);
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+  .about-prose p:first-child {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+    line-height: 1.35;
+    margin-bottom: 2rem;
+    color: var(--fg);
+    font-weight: 400;
+  }
+  .about-prose p:first-child em { font-style: italic; }
+  .about-prose strong { color: var(--accent); font-weight: 500; font-style: italic; font-family: var(--serif); font-size: 1.05em; }
+
+  .about-stats {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    background: transparent;
+    border: 0;
+  }
+  /* translucent education tabs - the render shows through */
+  .stat {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.07);
+    -webkit-backdrop-filter: blur(2px) saturate(150%) brightness(1.06) url(#glassDistort);
+    backdrop-filter: blur(2px) saturate(150%) brightness(1.06) url(#glassDistort);
+    border: 1px solid rgba(255, 255, 255, 0.40);
+    border-radius: 14px;
+    box-shadow:
+      inset 0 1px 1.5px rgba(255, 255, 255, 0.85),
+      inset 0 -10px 22px rgba(255, 255, 255, 0.05),
+      inset 0 0 22px rgba(255, 255, 255, 0.08),
+      0 14px 34px rgba(0, 0, 0, 0.32);
+    padding: 1.75rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    min-height: 240px;
+    overflow: hidden;
+    transition: background-color 0.5s var(--ease), border-color 0.5s var(--ease), transform 0.5s var(--ease-out);
+  }
+  /* liquid-glass specular sheen, kept behind the card text */
+  .stat::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.40), rgba(255,255,255,0.04) 32%, transparent 56%);
+    mix-blend-mode: screen;
+  }
+  .stat > * { position: relative; z-index: 1; }
+  .stat:hover { background-color: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.55); transform: translateY(-3px); }
+
+  .stat-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--red);
+  }
+  .stat-heading {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    line-height: 1.2;
+    color: var(--fg);
+    font-weight: 400;
+  }
+  .stat-heading em { font-style: italic; color: var(--fg-dim); }
+  .stat-detail {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--fg-dim);
+    flex-grow: 1;
+  }
+  .stat-link {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--fg);
+    text-decoration: none;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--line);
+    width: 100%;
+    transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+  }
+  .stat-link .arrow {
+    font-family: var(--serif);
+    font-size: 1rem;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .stat-link:hover {
+    color: var(--fg);
+    border-top-color: var(--line-strong);
+  }
+  .stat-link:hover .arrow { transform: translate(3px, -3px); }
+
+  /* ============ WORK ============ */
+  .work-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .work-col { display: flex; flex-direction: column; gap: 2rem; }
+  .project {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  .project:nth-child(1) { grid-column: span 7; }
+  .project:nth-child(2) { grid-column: span 5; }
+  .project:nth-child(3) { grid-column: span 5; }
+  .project:nth-child(4) { grid-column: span 7; }
+  .project:nth-child(5) { grid-column: span 12; }
+
+  /* frosted-glass thumbnail button: slight opacity, expands + opaque on hover */
+  .project-visual {
+    aspect-ratio: 16/10;
+    background: rgba(255, 255, 255, 0.07);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 10px 30px rgba(0, 0, 0, 0.28);
+    border-radius: 10px;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+    position: relative;
+    opacity: 0.78;
+    transform-origin: center;
+    transition: opacity 0.45s var(--ease), transform 0.45s var(--ease-out), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  }
+  /* thumbnail holding a real render - keep the image's aspect ratio */
+  .project-visual.has-img { aspect-ratio: 4 / 5; background: rgba(0, 0, 0, 0.25); }
+  .project-img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .project-visual::after {
+    content: "";
+    position: absolute;
+    inset: 11px;
+    border: 1px solid var(--line);
+    pointer-events: none;
+  }
+  .project-tag {
+    position: absolute;
+    top: 1.1rem;
+    left: 1.1rem;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #fff;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    background: rgba(14, 14, 17, 0.5);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    z-index: 2;
+  }
+  .project-year {
+    display: none;
+    position: absolute;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--fg-dim);
+    z-index: 2;
+  }
+  .project:hover .project-visual {
+    opacity: 1;
+    transform: scale(1.04);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 18px 44px rgba(0, 0, 0, 0.4);
+  }
+
+  .project-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .project-title {
+    font-family: var(--serif);
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .project-title em { font-style: italic; color: var(--fg-dim); }
+  .project-arrow {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    color: var(--fg-dim);
+    transition: transform 0.4s var(--ease-out), color 0.4s var(--ease);
+  }
+  .project:hover .project-arrow { transform: translate(4px, -4px); color: var(--accent); }
+  .project-desc {
+    font-size: 0.9rem;
+    color: var(--fg-dim);
+    margin-top: 0.5rem;
+    max-width: 50ch;
+  }
+
+  /* ============ EXPERIENCE ============ */
+  .timeline {
+    border-top: 1px solid var(--line);
+  }
+  .role {
+    display: grid;
+    grid-template-columns: 180px 1fr auto;
+    gap: 3rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+    transition: background 0.4s var(--ease);
+    position: relative;
+  }
+  .role:hover { background: linear-gradient(to right, rgba(255,255,255,0.025), transparent 30%); }
+  .role-period {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--fg-dim);
+  }
+  .role-info h3 {
+    font-family: var(--serif);
+    font-size: 1.65rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 0.35rem;
+  }
+  .role-info h3 em { font-style: italic; color: var(--fg-dim); }
+  .role-info .company {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 1rem;
+  }
+  .role-info p {
+    font-size: 0.95rem;
+    color: var(--fg-dim);
+    max-width: 60ch;
+    line-height: 1.65;
+  }
+  .role-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: flex-end;
+    max-width: 200px;
+  }
+  .role-tags span {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--fg-dim);
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ============ SKILLS ============ */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+  }
+  .skill-cat h4 {
+    font-family: var(--mono);
+    font-size: 1.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .skill-cat ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .skill-cat li {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    color: var(--fg);
+    font-weight: 400;
+    transition: color 0.3s var(--ease), padding-left 0.3s var(--ease);
+    cursor: default;
+  }
+  .skill-cat li:hover { color: var(--accent); padding-left: 0.5rem; }
+
+  /* ============ EDUCATION ============ */
+  .edu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .edu-item {
+    display: grid;
+    grid-template-columns: 200px 1fr auto;
+    gap: 3rem;
+    align-items: baseline;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .edu-period {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--fg-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  .edu-info h3 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 0.25rem;
+  }
+  .edu-info .school {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--fg-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .edu-info p { margin-top: 0.5rem; color: var(--fg-dim); font-size: 0.92rem; }
+  .edu-honor {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+  }
+
+  /* ============ CONTACT ============ */
+  .contact {
+    padding: 10rem 2.5rem;
+    text-align: center;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(138, 58, 38, 0.05), transparent 55%);
+  }
+  .contact-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--red);
+    margin-bottom: 2rem;
+  }
+  .contact h2 {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 9vw, 8rem);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    margin-bottom: 3rem;
+  }
+  .contact h2 em { font-style: normal; color: var(--fg-dim); }
+  .contact-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.4rem;
+    padding: 1.15rem 2.9rem;
+    animation: bubble-float 7s var(--ease) infinite;
+  }
+  .contact-cta::after {
+    content: "→";
+    position: relative;
+    z-index: 1;
+    transition: transform 0.4s var(--ease-out);
+  }
+  @keyframes bubble-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .contact-cta:hover::after { transform: translateX(6px); }
+  .download-wrap { display: flex; justify-content: center; margin-top: 1.2rem; }
+  .download-cta {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: var(--mono); font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.16em;
+    padding: 0.85rem 1.7rem;
+  }
+  .download-cta svg { width: 16px; height: 16px; flex: none; }
+
+  .contact-details {
+    margin-top: 2.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .contact-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .contact-detail {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--fg);
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    transition: color 0.4s var(--ease), background 0.4s var(--ease);
+  }
+  .contact-detail svg {
+    width: 14px;
+    height: 14px;
+    color: var(--fg);
+    transition: color 0.4s var(--ease);
+  }
+  .contact-detail:hover { color: var(--fg); background: rgba(255, 255, 255, 0.03); }
+  .contact-detail:hover svg { color: var(--fg); }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--line);
+    background: transparent;
+    border-radius: 6px;
+    color: var(--fg-muted);
+    cursor: pointer;
+    transition: color 0.3s var(--ease), border-color 0.3s var(--ease), background 0.3s var(--ease);
+    font-family: var(--mono);
+    padding: 0;
+  }
+  .copy-btn svg { width: 14px; height: 14px; }
+  .copy-btn:hover {
+    color: var(--fg);
+    border-color: var(--line-strong);
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .copy-btn.copied {
+    color: var(--fg);
+    border-color: var(--fg-dim);
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .copy-btn .check-icon { display: none; }
+  .copy-btn.copied .copy-icon { display: none; }
+  .copy-btn.copied .check-icon { display: block; }
+
+  /* Toast feedback shown briefly after copy */
+  .copy-toast {
+    position: fixed;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(20, 20, 22, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--line-strong);
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--fg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease-out);
+    z-index: 1000;
+  }
+  .copy-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .socials {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.4rem;
+  }
+  .socials a {
+    position: relative; overflow: hidden;
+    width: 50px; height: 50px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: rgba(255, 255, 255, 0.9); text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.07);
+    -webkit-backdrop-filter: blur(1px) saturate(155%) brightness(1.08) url(#glassDistort);
+    backdrop-filter: blur(1px) saturate(155%) brightness(1.08) url(#glassDistort);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow:
+      inset 0 1px 1.5px rgba(255, 255, 255, 0.9),
+      inset 0 0 16px rgba(255, 255, 255, 0.10),
+      0 8px 22px rgba(0, 0, 0, 0.34);
+    transition: transform 0.35s var(--ease-out), color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+  .socials a::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.05) 30%, transparent 52%);
+    opacity: 0.7; mix-blend-mode: screen;
+  }
+  .socials a svg { width: 22px; height: 22px; position: relative; z-index: 1; }
+  .socials a:hover { color: #fff; transform: translateY(-3px) scale(1.06); }
+  .vibe-note {
+    margin-top: 0.45rem;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.92rem;
+    letter-spacing: 0.01em;
+    color: var(--red);
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    position: relative;
+    z-index: 3;
+    padding: 2.5rem;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  footer .blink {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    animation: blink 2s infinite;
+    vertical-align: middle;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ============ REVEAL ============ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 980px) {
+    nav.top { padding: 1.25rem 1.25rem; }
+    nav.top ul { display: none; }
+    .nav-toggle { display: flex; }
+    .nav-cta { display: none; }
+    .scroll-progress { left: 12px; height: clamp(120px, 30vh, 220px); }
+    .scroll-cta { bottom: 1.25rem; font-size: 0.7rem; letter-spacing: 0.26em; gap: 0.45rem; }
+    .scroll-cta span { padding-left: 0.26em; }
+    .scroll-cta-arrow { width: 18px; height: 18px; }
+    /* Narrow screens: the scene becomes a fixed backdrop panel; copy sits on
+       top over a parchment top-wash (no pinned scrub stage). */
+    .hero { height: auto; }
+    .hero-stage {
+      position: relative;
+      height: auto;
+      min-height: 88vh;
+      display: flex;
+      align-items: flex-start;
+      padding: 7rem 1.25rem 4rem;
+      overflow: hidden;
+    }
+    .hero-copy { max-width: 100%; margin-top: 3vh; }
+    #heroCompass { opacity: 1; animation: none; }
+    .hero-scrim {
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 30%, rgba(231, 224, 206, 0.55) 50%, transparent 74%);
+    }
+    .hero .scroll-cta { display: none; }
+    section { padding: 5rem 1.25rem; }
+    .section-head { grid-template-columns: 1fr; gap: 0.75rem; margin-bottom: 3rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .about-stats { grid-template-columns: 1fr; }
+    .work-grid { grid-template-columns: 1fr; }
+    .project:nth-child(n) { grid-column: span 1; }
+    .role, .edu-item { grid-template-columns: 1fr; gap: 0.75rem; padding: 2rem 0; }
+    .role-tags { justify-content: flex-start; max-width: 100%; }
+    .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .contact { padding: 6rem 1.25rem; }
+    .socials { flex-wrap: wrap; gap: 1.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+  @media (max-width: 560px) {
+    .skills-grid { grid-template-columns: 1fr; }
+    .mm-nav > a, .mm-head { font-size: 1.7rem; }
+    .contact-row { flex-wrap: wrap; justify-content: center; }
+  }
+
+  /* ============================================================
+     THEME OVERRIDE - bold architectural headings: monumental
+     crimson Cinzel everywhere; descriptions stay clean black.
+     Placed last so it wins over the original per-component rules.
+     ============================================================ */
+  .section-title, .contact h2, .project-title,
+  .role-info h3, .edu-info h3, .stat-heading, .skill-cat h4 {
+    font-family: var(--display);
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+  .section-title, .contact h2 { text-transform: uppercase; }
+  .section-title em, .contact h2 em, .project-title em,
+  .role-info h3 em, .stat-heading em {
+    font-style: normal;
+    color: inherit;
+  }
+  /* mouse-driven particle layer (above the render/grain, below content) */
+  #fxParticles {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* ============================================================
+     STAGGERED LAYOUT - content columns hug alternating sides so
+     the render stays visible (and never floats centered on wide
+     screens). About/Experience hug left, Work/Skills hug right.
+     ============================================================ */
+  @media (min-width: 900px) {
+    #about, #work, #experience, #skills {
+      padding-left: clamp(1.5rem, 3.5vw, 3.5rem);
+      padding-right: clamp(1.5rem, 3.5vw, 3.5rem);
+    }
+    #about .section-head, #about .container,
+    #work .section-head, #work .container,
+    #experience .section-head, #experience .container,
+    #skills .section-head, #skills .container {
+      max-width: clamp(460px, 44vw, 800px);
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+    /* left-hug */
+    #about .section-head, #about .container,
+    #experience .section-head, #experience .container { margin-right: auto; }
+    /* right-hug */
+    #work .section-head, #work .container,
+    #skills .section-head, #skills .container { margin-left: auto; }
+
+    /* reflow the inner grids to fit the narrower side column */
+    #about .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    #about .about-portrait { max-width: 320px; }
+    #work .work-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    #work .project { grid-column: auto; }
+    #skills .skills-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    #experience .role { grid-template-columns: 1fr; gap: 0.6rem; }
+    #experience .role-tags { justify-content: flex-start; max-width: 100%; }
+
+    /* WORK - even spread: one card on each side, the render shows through the centre */
+    #work { padding-left: clamp(1.5rem, 3.5vw, 3.5rem); padding-right: clamp(1.5rem, 3.5vw, 3.5rem); }
+    #work .section-head, #work .container {
+      max-width: none; width: 100%; margin-left: 0; margin-right: 0;
+    }
+    #work .section-head { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 0.6rem; }
+    #work .work-grid {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: clamp(6rem, 22vw, 26rem);   /* big centre gap = render stays visible */
+    }
+    #work .work-col { flex: 1; gap: 2.5rem; }
+    #work .project { grid-column: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"><span class="scroll-progress-fill" id="scrollProgressFill"></span></div>
+<!-- refractive textured-glass filter (distorts whatever is behind the element) -->
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <filter id="glassDistort" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.009 0.011" numOctaves="2" seed="11" result="n"/>
+    <feGaussianBlur in="n" stdDeviation="1" result="nb"/>
+    <feDisplacementMap in="SourceGraphic" in2="nb" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<div class="sheet-frame" aria-hidden="true"></div>
+
+<!-- Full-page cinematic backdrop: the Anomaly Roof model scrubs across the whole scroll -->
+<canvas id="heroCompass" width="1500" height="1080" aria-label="Anomaly Roof house model assembling as you scroll"></canvas>
+<div class="fx-vignette" aria-hidden="true"></div>
+<div class="fx-grain" aria-hidden="true"></div>
+<canvas id="fxParticles" aria-hidden="true"></canvas>
+
+<!-- =================== NAVIGATION =================== -->
+<nav class="top">
+  <div class="location">
+    <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/>
+      <ellipse cx="12" cy="12" rx="3.5" ry="9"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+    </svg>
+    <span>Phoenix, AZ</span>
+  </div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li class="nav-work">
+      <a href="#work">Work</a>
+      <div class="work-menu">
+        <a href="projects/architectural-design.html">Architectural Design</a>
+        <a href="projects/animation.html">Animation</a>
+        <a href="projects/construction-management.html">Construction Management</a>
+        <a href="projects/rhino.html">Rhino</a>
+        <a href="projects/revit.html">Revit</a>
+        <a href="projects/interactive-arch-viz.html">Interactive Arch Viz</a>
+        <a href="projects/drawings-and-sketches.html">Drawings &amp; Sketches</a>
+      </div>
+    </li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get in touch</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile menu overlay -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <nav class="mm-nav">
+    <a href="#about">About</a>
+    <div class="mm-group">
+      <a href="#work" class="mm-head">Work</a>
+      <div class="mm-sub">
+        <a href="projects/architectural-design.html">Architectural Design</a>
+        <a href="projects/animation.html">Animation</a>
+        <a href="projects/construction-management.html">Construction Management</a>
+        <a href="projects/rhino.html">Rhino</a>
+        <a href="projects/revit.html">Revit</a>
+        <a href="projects/interactive-arch-viz.html">Interactive Arch Viz</a>
+        <a href="projects/drawings-and-sketches.html">Drawings &amp; Sketches</a>
+      </div>
+    </div>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact" class="mm-cta">Get in touch</a>
+  </nav>
+</div>
+
+<!-- =================== HERO =================== -->
+<section class="hero" id="top">
+  <div class="hero-stage">
+    <div class="hero-copy">
+      <h1 class="hero-portfolio">Portfolio</h1>
+      <div class="hero-id">
+        <span class="hero-name">Erick Sabando</span>
+        <span class="hero-title">Arch Designer</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== ABOUT =================== -->
+<section id="about">
+  <div class="section-head">
+    <div class="section-num">[ 01 / About ]</div>
+    <h2 class="section-title">About <em>me</em>.</h2>
+  </div>
+
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-portrait reveal">
+        <div class="portrait-caption">
+          <span>fig. III</span> Erick Sabando - Arch Designer
+        </div>
+      </div>
+
+      <div class="about-prose reveal">
+        <p>
+          I'm <em>Erick Sabando</em> - an architectural design &amp; visualization
+          artist focused on the intersection of craft, systems thinking, and storytelling.
+        </p>
+        <p>
+          My work spans from <strong>conceptual ideation</strong> to tried and true
+          building methods and experience. From speculative research and development
+          to final design. I care about the details that separate
+          <strong>mundane</strong> from <strong>anomalous</strong>.
+        </p>
+        <p>
+          Currently exploring how generative tools can extend, rather than replace,
+          the designer's hand. Also, exploring immersive real-time rendering
+          techniques that allow viewers to experience a developing design through
+          third-person, first-person, and virtual reality - supplementing traditional
+          delivery methods like not only static and fly-through renderings but
+          interactive schematics and technical drawings. Putting stakeholders in
+          the driver's seat as if they were playing an open-world video game.
+        </p>
+
+        <div class="about-stats">
+          <div class="stat">
+            <div class="stat-eyebrow">[ Education ]</div>
+            <div class="stat-heading">4th Year <em>BSD Architecture Studies</em></div>
+            <div class="stat-detail">Arizona State University - minor in Construction Management.</div>
+            <a href="asu-dars-transcript.pdf" class="stat-link" data-doc="asu-dars-transcript.pdf" data-doc-title="Degree Audit <em>- BSD Architectural Studies</em>" data-doc-meta="Arizona State University · 2026">
+              View transcript <span class="arrow">↗</span>
+            </a>
+          </div>
+
+          <div class="stat">
+            <div class="stat-eyebrow">[ Credential ]</div>
+            <div class="stat-heading">Associate's, <em>Animation</em> &amp; Time-Based Media</div>
+            <div class="stat-detail">Multidisciplinary foundation in motion, narrative, and visual storytelling.</div>
+            <a href="mcc-animation-certificate.png" class="stat-link" data-doc="mcc-animation-certificate.png" data-doc-title="Associate's in Animation &amp; Time-Based Media" data-doc-meta="Mesa Community College · 2024">
+              View certificate <span class="arrow">↗</span>
+            </a>
+          </div>
+
+          <div class="stat">
+            <div class="stat-eyebrow">[ Honor ]</div>
+            <div class="stat-heading">Design Excellence Award <em>- Spring 2026</em></div>
+            <div class="stat-detail">Most recent recognition for outstanding studio work.</div>
+            <a href="design-excellence-spring-2026.png" class="stat-link" data-doc="design-excellence-spring-2026.png" data-doc-title="Design Excellence Award <em>- Spring 2026</em>" data-doc-meta="Arizona State University · The Design School">
+              View certificate <span class="arrow">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== WORK =================== -->
+<section id="work">
+  <div class="section-head">
+    <div class="section-num">[ 02 / Work ]</div>
+    <h2 class="section-title">Selected <em>work</em>.</h2>
+  </div>
+
+  <div class="container">
+    <div class="work-grid">
+      <div class="work-col">
+        <a href="projects/architectural-design.html" class="project reveal">
+          <div class="project-visual has-img">
+            <img class="project-img" src="projects/architectural-design.png" alt="Architectural Design" onerror="this.remove()" />
+          </div>
+          <div class="project-meta">
+            <div><h3 class="project-title">Architectural Design</h3></div>
+          </div>
+        </a>
+
+        <a href="projects/animation.html" class="project reveal">
+          <div class="project-visual">
+            <img class="project-img" src="projects/animation-thumb.jpg" alt="Animation - reel cover" onerror="this.remove()" />
+          </div>
+          <div class="project-meta">
+            <div><h3 class="project-title">Animation</h3></div>
+          </div>
+        </a>
+
+        <a href="projects/construction-management.html" class="project reveal">
+          <div class="project-visual">
+            <img class="project-img" src="projects/construction-management/cm-thumb.jpg" alt="Construction Management - Sunnyslope HS render" onerror="this.remove()" />
+          </div>
+          <div class="project-meta">
+            <div><h3 class="project-title">Construction Management</h3></div>
+          </div>
+        </a>
+      </div>
+
+      <div class="work-col">
+        <a href="projects/rhino.html" class="project reveal">
+          <div class="project-visual">
+            <img class="project-img" src="projects/rhino-thumb.jpg" alt="Rhino - site massing study" onerror="this.remove()" />
+          </div>
+          <div class="project-meta">
+            <div><h3 class="project-title">Rhino</h3></div>
+          </div>
+        </a>
+
+        <a href="projects/revit.html" class="project reveal">
+          <div class="project-visual">
+            <img class="project-img" src="projects/revit-thumb.jpg" alt="Revit - Main Street Pavilion floor plan" onerror="this.remove()" />
+          </div>
+          <div class="project-meta">
+            <div><h3 class="project-title">Revit</h3></div>
+          </div>
+        </a>
+
+        <a href="projects/interactive-arch-viz.html" class="project reveal">
+          <div class="project-visual">
+          </div>
+          <div class="project-meta">
+            <div>
+              <h3 class="project-title">Interactive Arch Viz</h3>
+              <p class="project-desc">Selected work - page coming soon.</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="projects/drawings-and-sketches.html" class="project reveal">
+          <div class="project-visual">
+            <img class="project-img" src="projects/drawings-thumb.jpg" alt="Drawings &amp; Sketches - concept ISO sketch" onerror="this.remove()" />
+          </div>
+          <div class="project-meta">
+            <div><h3 class="project-title">Drawings &amp; Sketches</h3></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== EXPERIENCE =================== -->
+<section id="experience">
+  <div class="section-head">
+    <div class="section-num">[ 03 / Experience ]</div>
+    <h2 class="section-title">Recent &amp; relevant <em>experience</em>.</h2>
+  </div>
+
+  <div class="container">
+    <div class="timeline">
+      <div class="role reveal">
+        <div class="role-period">Jul 2025 - Present</div>
+        <div class="role-info">
+          <h3>Independent <em>- Gig Economy</em></h3>
+          <div class="company">DoorDash · Spark</div>
+          <p>Flexible delivery work balanced alongside full-time studio coursework at ASU. Self-managed routing, time, and customer interactions across both platforms.</p>
+        </div>
+        <div class="role-tags"><span>Independent</span><span>Logistics</span></div>
+      </div>
+
+      <div class="role reveal">
+        <div class="role-period">Mar 2022 - Nov 2024</div>
+        <div class="role-info">
+          <h3>Resource Coordinator</h3>
+          <div class="company">Happy Kids Pediatrics &amp; Feliz Care Centers</div>
+          <p>Coordinated appointment scheduling, insurance verification, and the processing and distribution of referrals to ensure patients connected with appropriate specialists. Adhered to HIPAA standards throughout to maintain patient confidentiality.</p>
+        </div>
+        <div class="role-tags"><span>Coordination</span><span>Healthcare</span><span>Compliance</span></div>
+      </div>
+
+      <div class="role reveal">
+        <div class="role-period">Oct 2019 - Mar 2022</div>
+        <div class="role-info">
+          <h3>Parcel Delivery Driver</h3>
+          <div class="company">OnTrac</div>
+          <p>Planned routes and managed truck loading to ensure time-efficient, accurate parcel distribution. Hand-delivered commercial freight and collected signatures from responsible parties.</p>
+        </div>
+        <div class="role-tags"><span>Logistics</span><span>Routing</span></div>
+      </div>
+
+      <div class="role reveal">
+        <div class="role-period">Jun 2008 - Jun 2012</div>
+        <div class="role-info">
+          <h3>Utilities <em>- Generator Mechanic &amp; Electrical Wiring Tech</em></h3>
+          <div class="company">United States Marine Corps</div>
+          <p>Coordinated setup, maintenance, and repair of field power generation units and components. Operated to the standards set forth by the USMC across deployments and field environments.</p>
+        </div>
+        <div class="role-tags"><span>Military</span><span>Mechanical</span><span>Systems</span></div>
+      </div>
+
+      <div class="role reveal">
+        <div class="role-period">Jun 2006 - Dec 2007</div>
+        <div class="role-info">
+          <h3>Excavation Laborer</h3>
+          <div class="company">John J. Skalley</div>
+          <p>Assisted and executed excavation operations for foundations, drainage ditches, and site preparation - early hands-on exposure to the realities of construction sequencing and site work.</p>
+        </div>
+        <div class="role-tags"><span>Construction</span><span>Site Work</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== SKILLS =================== -->
+<section id="skills">
+  <div class="section-head">
+    <div class="section-num">[ 04 / Skills ]</div>
+    <h2 class="section-title"><em>Skills</em>.</h2>
+  </div>
+
+  <div class="container">
+    <div class="skills-grid">
+      <div class="skill-cat reveal">
+        <h4>Graphic</h4>
+        <ul>
+          <li>Adobe Illustrator</li>
+          <li>Adobe Photoshop</li>
+          <li>Adobe InDesign</li>
+          <li>Adobe Acrobat</li>
+        </ul>
+      </div>
+
+      <div class="skill-cat reveal">
+        <h4>Modeling</h4>
+        <ul>
+          <li>Rhino</li>
+          <li>Blender</li>
+          <li>Revit</li>
+        </ul>
+      </div>
+
+      <div class="skill-cat reveal">
+        <h4>Rendering</h4>
+        <ul>
+          <li>Twinmotion</li>
+          <li>Unreal Engine 5</li>
+          <li>Blender</li>
+        </ul>
+      </div>
+
+      <div class="skill-cat reveal">
+        <h4>AI Collaborators</h4>
+        <ul>
+          <li>Claude</li>
+          <li>ChatGPT</li>
+          <li>Gemini</li>
+        </ul>
+      </div>
+
+      <div class="skill-cat reveal">
+        <h4>Web Design</h4>
+        <p class="vibe-note">(Vibe coding)</p>
+        <ul>
+          <li>HTML &amp; CSS</li>
+          <li>JavaScript</li>
+          <li>Figma</li>
+          <li>Webflow</li>
+        </ul>
+      </div>
+
+      <div class="skill-cat reveal">
+        <h4>Beyond</h4>
+        <ul>
+          <li>Rayon</li>
+          <li>Microsoft Office</li>
+          <li>English / Spanish</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== CONTACT =================== -->
+<section class="contact" id="contact">
+  <div class="contact-eyebrow">Let's build something</div>
+  <h2>Let's <em>talk</em>.</h2>
+  <a href="mailto:emsabandocastro@gmail.com?subject=Project%20inquiry%20from%20your%20portfolio" class="contact-cta">Contact</a>
+
+  <div class="download-wrap">
+    <a href="Erick_Sabando_Portfolio.pdf" class="download-cta" download="Erick Sabando - Architecture Portfolio.pdf">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Download Portfolio (PDF)
+    </a>
+  </div>
+
+  <div class="contact-details">
+    <div class="contact-row">
+      <a href="mailto:emsabandocastro@gmail.com" class="contact-detail">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="M22 7l-10 6L2 7"/>
+        </svg>
+        emsabandocastro@gmail.com
+      </a>
+      <button class="copy-btn" data-copy="emsabandocastro@gmail.com" data-label="Email" aria-label="Copy email address" type="button">
+        <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="9" width="13" height="13" rx="2"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="socials">
+    <a href="https://www.linkedin.com/in/erick-sabando-56768092" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM10 9h3.8v1.65h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.29-.03-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21h-4z"/></svg>
+    </a>
+    <a href="#" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- =================== FOOTER =================== -->
+<footer>
+  <div>© 2025 - Erick Sabando. All work owned by respective clients.</div>
+  <div>Based in Phoenix, AZ</div>
+  <div><span class="blink"></span>Open for select projects · 2026</div>
+</footer>
+
+<a href="#top" class="to-top" id="toTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <line x1="12" y1="19" x2="12" y2="5"/>
+    <polyline points="6 11 12 5 18 11"/>
+  </svg>
+</a>
+
+<!-- Document viewer modal - opens when a credential card is clicked -->
+<div class="doc-modal" id="docModal" role="dialog" aria-modal="true" aria-labelledby="docModalTitle" hidden>
+  <div class="doc-modal-backdrop" data-close></div>
+  <div class="doc-modal-shell">
+    <div class="doc-modal-header">
+      <h2 class="doc-modal-title" id="docModalTitle"></h2>
+      <div class="doc-modal-meta" id="docModalMeta"></div>
+    </div>
+    <div class="doc-modal-frame" id="docModalFrame"></div>
+    <div class="doc-modal-actions">
+      <a class="doc-modal-action" id="docModalDownload" href="#" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download
+      </a>
+      <a class="doc-modal-action" id="docModalOpen" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+        Open in new tab
+      </a>
+      <button class="doc-modal-action close" data-close type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="copy-toast" id="copyToast" role="status" aria-live="polite">Copied</div>
+
+<script>
+  /* ==========================================================
+     SMOOTH SCROLL - Lenis drives the whole page so the particle
+     fade and the film scrub both feel weighted and cinematic.
+     ========================================================== */
+  const lenis = (typeof Lenis !== 'undefined') ? new Lenis({ lerp: 0.09, smoothWheel: true }) : null;
+  window.__lenis = lenis;
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href');
+      if (id.length < 2) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      if (lenis) lenis.scrollTo(target, { duration: 1.6 });
+      else target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  /* ==========================================================
+     HERO - scroll-scrubbed frame sequence. As you descend, the
+     Anomaly Roof house model assembles (frames/hero/*), eased and
+     squash-free per the Blender animation.
+     Falls back to a single static frame for prefers-reduced-motion.
+     ========================================================== */
+  const compass = (() => {
+    const canvas = document.getElementById('heroCompass');
+    if (!canvas) return { update() {} };
+    const ctx = canvas.getContext('2d');
+    const hero = document.getElementById('top');
+    const cue = document.querySelector('.hero .scroll-cta');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
+      && !new URLSearchParams(location.search).has('forcemotion');
+
+    const FRAME_COUNT = 125;
+    const framePath = (i) => `frames/hero/frame_${String(i).padStart(4, '0')}.jpg`;
+
+    // Preload the whole sequence so the scrub never stalls
+    const frames = [];
+    for (let i = 0; i < FRAME_COUNT; i++) {
+      const im = new Image();
+      im.onload = () => { if (i === 0 || reduced) draw(lastP); };
+      im.src = framePath(i + 1);
+      frames[i] = im;
+    }
+
+    let lastIdx = -1, lastP = 0;
+    function frameAt(idx) {
+      const im = frames[idx];
+      if (im && im.complete && im.naturalWidth) return im;
+      for (let k = idx; k >= 0; k--) {           // nearest already-loaded frame
+        const f = frames[k];
+        if (f && f.complete && f.naturalWidth) return f;
+      }
+      return null;
+    }
+    function draw(p) {
+      lastP = p;
+      const idx = Math.min(FRAME_COUNT - 1, Math.max(0, (p * (FRAME_COUNT - 1)) | 0));
+      const im = frameAt(idx);
+      if (!im) return;
+      const cw = canvas.clientWidth, ch = canvas.clientHeight;
+      if (!cw || !ch) return;
+      // Centered cover: fill the whole viewport as a backdrop
+      const scale = Math.max(cw / im.naturalWidth, ch / im.naturalHeight);
+      const dw = im.naturalWidth * scale, dh = im.naturalHeight * scale;
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.drawImage(im, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+      lastIdx = idx;
+    }
+
+    function resize() {
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.max(1, Math.round(rect.width * dpr));
+      canvas.height = Math.max(1, Math.round(rect.height * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      lastIdx = -1;
+      draw(lastP);
+    }
+    addEventListener('resize', resize);
+
+    function update() {
+      // scroll-scrub is user-driven, so it runs even with prefers-reduced-motion
+      // scrub across the WHOLE page scroll, not just the hero
+      const max = (document.documentElement.scrollHeight - innerHeight) || 1;
+      const p = Math.min(Math.max(window.scrollY / max, 0), 1);
+      const idx = Math.min(FRAME_COUNT - 1, (p * (FRAME_COUNT - 1)) | 0);
+      if (idx !== lastIdx) draw(p);
+      if (cue) cue.classList.toggle('dim', p > 0.02);
+    }
+
+    resize();
+    return { update };
+  })();
+
+  /* ==========================================================
+     FILM - canvas frame-sequence scrub. Preloads frames/film/*;
+     if the sequence isn't rendered yet it falls back to a slow
+     Ken Burns drift across the architectural render.
+     ========================================================== */
+  const film = (() => {
+    const section = document.getElementById('film');
+    const canvas = document.getElementById('filmCanvas');
+    if (!section || !canvas) return { update() {} };   // film section removed (awaiting new model)
+    const ctx = canvas.getContext('2d', { alpha: false });
+    const lines = [...section.querySelectorAll('.film-line')];
+    const fill = document.getElementById('filmProgressFill');
+
+    const FRAME_COUNT = 180;
+    // Sepia toned-paper frames (see gen_film_ink.py) - the clay-on-black
+    // turntable re-rendered as a warm ink study that sits on the parchment.
+    const framePath = (i) => `frames/film_ink/frame_${String(i).padStart(4, '0')}.jpg`;
+
+    const poster = new Image();
+    // First turntable frame doubles as the poster, so there's no flash of a
+    // different image before the sequence finishes preloading. If the frames
+    // folder is ever missing, fall back to the architectural render.
+    poster.src = 'frames/film_ink/frame_0001.jpg';
+    poster.onload = () => draw(0, true);
+    poster.onerror = () => { poster.onerror = null; poster.src = 'hero_image.png'; };
+
+    let mode = 'poster';
+    const frames = [];
+    const probe = new Image();
+    probe.onload = () => {
+      mode = 'frames';
+      for (let i = 0; i < FRAME_COUNT; i++) {
+        const im = new Image();
+        im.src = framePath(i + 1);
+        frames[i] = im;
+      }
+    };
+    probe.src = framePath(1);
+
+    let lastP = -1;
+    function draw(p, force) {
+      const cw = canvas.clientWidth, ch = canvas.clientHeight;
+      if (!cw || !ch) return;
+      let img = poster;
+      if (mode === 'frames') {
+        const idx = Math.min(FRAME_COUNT - 1, (p * (FRAME_COUNT - 1)) | 0);
+        const f = frames[idx];
+        if (f && f.complete && f.naturalWidth) img = f;
+      }
+      if (!img.complete || !img.naturalWidth) return;
+      ctx.fillStyle = '#e9e0ca';
+      ctx.fillRect(0, 0, cw, ch);
+      let scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+      let oy = 0;
+      if (mode === 'poster') {           // Ken Burns drift until frames exist
+        scale *= 1 + p * 0.16;
+        oy = -p * ch * 0.12;
+      }
+      const dw = img.naturalWidth * scale, dh = img.naturalHeight * scale;
+      ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2 + oy, dw, dh);
+    }
+
+    function resize() {
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      canvas.width = canvas.clientWidth * dpr;
+      canvas.height = canvas.clientHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      lastP = -1;
+    }
+    addEventListener('resize', resize);
+
+    function update() {
+      const rect = section.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > innerHeight) return;
+      const scrollable = rect.height - innerHeight;
+      const p = Math.min(Math.max(-rect.top / scrollable, 0), 1);
+
+      const step = mode === 'frames' ? 1 / (FRAME_COUNT * 2) : 0.002;
+      if (Math.abs(p - lastP) > step) { draw(p); lastP = p; }
+
+      for (const el of lines) {
+        const a = parseFloat(el.dataset.in), b = parseFloat(el.dataset.out);
+        const mid = (a + b) / 2, half = (b - a) / 2;
+        let o = 1 - Math.abs(p - mid) / half;
+        o = Math.max(0, Math.min(1, o * 1.6));
+        el.style.opacity = o.toFixed(3);
+        el.style.transform = `translateY(${(1 - o) * 26}px)`;
+      }
+      if (fill) fill.style.transform = `scaleX(${p.toFixed(4)})`;
+    }
+
+    resize();
+    return { update };
+  })();
+
+  /* ==========================================================
+     PARTICLES - small black motes that drift like the film grain
+     and are drawn toward the cursor as it moves.
+     ========================================================== */
+  const particles = (() => {
+    const canvas = document.getElementById('fxParticles');
+    if (!canvas) return { update() {} };
+    const ctx = canvas.getContext('2d');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
+      && !new URLSearchParams(location.search).has('forcemotion');
+    let W = innerWidth, H = innerHeight;
+    function resize() {
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      W = innerWidth; H = innerHeight;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize(); addEventListener('resize', resize);
+    const mouse = { x: W / 2, y: H / 2, sx: W / 2, sy: H / 2, active: false };
+    addEventListener('pointermove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true; }, { passive: true });
+    const COUNT = Math.min(120, Math.max(48, (W * H / 15000) | 0));
+    const P = [];
+    for (let i = 0; i < COUNT; i++) {
+      P.push({ x: Math.random() * W, y: Math.random() * H, vx: 0, vy: 0,
+               s: 0.6 + Math.random() * 1.5, a: 0.10 + Math.random() * 0.32,
+               n: Math.random() * 1000, sw: Math.random() < 0.55, prox: 0 });
+    }
+    function update(now) {
+      if (reduced) return;
+      mouse.sx += (mouse.x - mouse.sx) * 0.12;
+      mouse.sy += (mouse.y - mouse.sy) * 0.12;
+      const t = (now || performance.now()) * 0.001;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#0c0b09';
+      const R = 220;
+      for (const p of P) {
+        p.vx += Math.sin(p.n + t * 0.7 + p.y * 0.01) * 0.006;
+        p.vy += Math.cos(p.n * 1.3 + t * 0.6 + p.x * 0.01) * 0.006;
+        p.prox = 0;
+        if (mouse.active) {
+          const dx = mouse.sx - p.x, dy = mouse.sy - p.y, d2 = dx * dx + dy * dy;
+          if (d2 < R * R) {
+            const d = Math.sqrt(d2) || 1, f = 1 - d / R;
+            const pull = f * f * (p.sw ? 0.24 : 0.06);
+            p.vx += (dx / d) * pull; p.vy += (dy / d) * pull;
+            p.prox = f;
+          }
+        }
+        p.vx *= 0.92; p.vy *= 0.92;
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < -10) p.x += W + 20; else if (p.x > W + 10) p.x -= W + 20;
+        if (p.y < -10) p.y += H + 20; else if (p.y > H + 10) p.y -= H + 20;
+        ctx.globalAlpha = Math.min(0.72, p.a + p.prox * 0.5);
+        const s = p.s + p.prox * 1.2;
+        ctx.fillRect(p.x, p.y, s, s);
+      }
+      ctx.globalAlpha = 1;
+    }
+    return { update };
+  })();
+
+  /* Single rAF loop drives Lenis + the canvases */
+  (function raf(now) {
+    if (lenis) lenis.raf(now);
+    compass.update();
+    film.update();
+    particles.update(now);
+    requestAnimationFrame(raf);
+  })(performance.now());
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
+
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = `${(i % 4) * 0.08}s`;
+    io.observe(el);
+  });
+
+  // Copy-to-clipboard with toast + button check-icon feedback
+  const toast = document.getElementById('copyToast');
+  let toastTimer;
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('visible'), 1800);
+  }
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const value = btn.dataset.copy;
+      const label = btn.dataset.label || 'Value';
+      try {
+        await navigator.clipboard.writeText(value);
+      } catch (err) {
+        // Fallback for older browsers / non-secure contexts
+        const tmp = document.createElement('textarea');
+        tmp.value = value;
+        tmp.setAttribute('readonly', '');
+        tmp.style.position = 'absolute';
+        tmp.style.left = '-9999px';
+        document.body.appendChild(tmp);
+        tmp.select();
+        try { document.execCommand('copy'); } catch (_) {}
+        document.body.removeChild(tmp);
+      }
+      btn.classList.add('copied');
+      showToast(`${label} copied`);
+      setTimeout(() => btn.classList.remove('copied'), 1800);
+    });
+  });
+
+  // Back-to-top - appears once user has scrolled past 80% of the hero height
+  const toTop = document.getElementById('toTop');
+  function updateToTop() {
+    const threshold = window.innerHeight * 0.8;
+    toTop.classList.toggle('visible', window.scrollY > threshold);
+  }
+  window.addEventListener('scroll', updateToTop, { passive: true });
+  updateToTop();
+
+  // Document modal - opens when a credential card link with data-doc is clicked.
+  // Renders the PDF inline using an <iframe>, themed to match the site.
+  const docModal = document.getElementById('docModal');
+  const docModalTitle = document.getElementById('docModalTitle');
+  const docModalMeta = document.getElementById('docModalMeta');
+  const docModalFrame = document.getElementById('docModalFrame');
+  const docModalDownload = document.getElementById('docModalDownload');
+  const docModalOpen = document.getElementById('docModalOpen');
+
+  function openDocModal(src, title, meta) {
+    docModalTitle.innerHTML = title || 'Document';
+    docModalMeta.textContent = meta || '';
+    // Plain-text version of the title for the alt attribute
+    const plainTitle = (title || 'Document').replace(/<[^>]+>/g, '');
+    // Build either an <img> for images or an <iframe> for PDFs / other docs
+    const isImage = /\.(png|jpe?g|webp|gif|svg)$/i.test(src);
+    if (isImage) {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = plainTitle;
+      docModalFrame.innerHTML = '';
+      docModalFrame.appendChild(img);
+    } else {
+      const iframe = document.createElement('iframe');
+      iframe.src = src + '#view=FitH&toolbar=0';
+      iframe.title = 'Document viewer';
+      docModalFrame.innerHTML = '';
+      docModalFrame.appendChild(iframe);
+    }
+    docModalDownload.href = src;
+    docModalOpen.href = src;
+    docModal.hidden = false;
+    void docModal.offsetWidth;
+    docModal.classList.add('open');
+    document.body.classList.add('modal-open');
+    if (window.__lenis) window.__lenis.stop();
+  }
+  function closeDocModal() {
+    docModal.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    if (window.__lenis) window.__lenis.start();
+    setTimeout(() => {
+      docModal.hidden = true;
+      docModalFrame.innerHTML = '';
+    }, 400);
+  }
+
+  document.querySelectorAll('a.stat-link[data-doc]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      openDocModal(
+        link.dataset.doc,
+        link.dataset.docTitle,
+        link.dataset.docMeta
+      );
+    });
+  });
+
+  document.querySelectorAll('[data-close]').forEach(el => {
+    el.addEventListener('click', closeDocModal);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && docModal.classList.contains('open')) {
+      closeDocModal();
+    }
+  });
+</script>
+
+<!-- Nav behaviour: frost on scroll, dissolve location past hero, highlight current section -->
+<script>
+  (function () {
+    var nav = document.querySelector('nav.top');
+    if (!nav) return;
+    var pfill = document.getElementById('scrollProgressFill');
+
+    // frost the bar + dissolve the location as the user leaves the first screen
+    function onScroll() {
+      var y = window.scrollY || window.pageYOffset || 0;
+      nav.classList.toggle('scrolled', y > 60);
+      nav.classList.toggle('past-hero', y > window.innerHeight * 0.7);
+      if (pfill) {
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        pfill.style.transform = 'scaleY(' + (max > 0 ? Math.min(1, y / max) : 0) + ')';
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    onScroll();
+
+    // highlight + enlarge the nav link for the section in view
+    var links = {};
+    document.querySelectorAll('nav.top ul a').forEach(function (a) {
+      var id = (a.getAttribute('href') || '').replace('#', '');
+      if (id) links[id] = a;
+    });
+    var sections = Object.keys(links)
+      .map(function (id) { return document.getElementById(id); })
+      .filter(Boolean);
+    if ('IntersectionObserver' in window && sections.length) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          Object.keys(links).forEach(function (id) { links[id].classList.remove('active'); });
+          if (links[e.target.id]) links[e.target.id].classList.add('active');
+        });
+      }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+      sections.forEach(function (s) { io.observe(s); });
+    }
+  })();
+</script>
+
+<!-- Mobile menu open/close -->
+<script>
+  (function () {
+    var btn = document.getElementById('navToggle'),
+        mm = document.getElementById('mobileMenu');
+    if (!btn || !mm) return;
+    function set(open) {
+      btn.classList.toggle('open', open);
+      mm.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      mm.setAttribute('aria-hidden', open ? 'false' : 'true');
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+    btn.addEventListener('click', function () { set(!mm.classList.contains('open')); });
+    mm.addEventListener('click', function (e) { if (e.target === mm) set(false); });
+    mm.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { set(false); }); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+    window.addEventListener('resize', function () { if (window.innerWidth > 980 && mm.classList.contains('open')) set(false); });
+  })();
+</script>
+
+</body>
+</html>

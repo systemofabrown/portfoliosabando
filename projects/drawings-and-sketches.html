@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Drawings & Sketches - Erick Sabando</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: radial-gradient(ellipse 120% 90% at 50% -10%, #2a2a2f, #121214 72%);
+    color: #f2f2f5;
+    font-family: "Archivo", system-ui, sans-serif;
+    display: flex; flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.6rem clamp(1.5rem, 4vw, 3.5rem);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+  }
+  .back {
+    font-family: "Geist Mono", monospace; font-size: 0.76rem; text-transform: uppercase;
+    letter-spacing: 0.18em; color: #d11a35; text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease; display: inline-block;
+  }
+  .back:hover { color: #fff; transform: translateX(-3px); }
+  .brand {
+    font-family: "Geist Mono", monospace; font-size: 0.74rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(242,242,245,0.6);
+  }
+  main {
+    flex: 1; display: flex; flex-direction: column; justify-content: flex-start;
+    padding: clamp(3rem, 7vw, 5rem) clamp(1.5rem, 4vw, 3.5rem) 7rem; width: 100%; max-width: 1400px;
+  }
+  .eyebrow {
+    font-family: "Geist Mono", monospace; color: #d11a35; text-transform: uppercase;
+    letter-spacing: 0.22em; font-size: 0.8rem; margin-bottom: 1rem;
+  }
+  h1 {
+    font-family: "Anton", "Impact", sans-serif; text-transform: uppercase;
+    font-size: clamp(2.6rem, 11vw, 7rem); line-height: 0.9; letter-spacing: 0.02em;
+  }
+  .lead {
+    margin-top: 1.4rem; max-width: 60ch; color: rgba(242,242,245,0.72);
+    font-size: 1.1rem; line-height: 1.65;
+  }
+  /* masonry gallery of full sketches */
+  .gallery { margin-top: 2.6rem; columns: 3 340px; column-gap: 1.5rem; }
+  .shot {
+    break-inside: avoid; display: block; width: 100%; margin: 0 0 1.5rem; padding: 0;
+    background: none; border: 0; text-align: left; cursor: pointer; color: inherit;
+  }
+  .shot-frame {
+    border: 1px solid rgba(255,255,255,0.16); border-radius: 12px; overflow: hidden;
+    background: #0c0c0e; box-shadow: 0 12px 30px rgba(0,0,0,0.34);
+    transition: transform .35s ease, border-color .35s ease;
+  }
+  .shot:hover .shot-frame { transform: translateY(-3px); border-color: rgba(255,255,255,0.42); }
+  .shot:focus-visible .shot-frame { outline: 2px solid #d11a35; outline-offset: 2px; }
+  .shot img { width: 100%; height: auto; display: block; }
+  .shot-cap {
+    margin-top: 0.7rem; font-family: "Geist Mono", monospace; font-size: 0.72rem;
+    letter-spacing: 0.14em; text-transform: uppercase; color: rgba(242,242,245,0.6);
+    transition: color .3s ease;
+  }
+  .shot:hover .shot-cap { color: #fff; }
+  /* lightbox */
+  .lightbox { position: fixed; inset: 0; z-index: 1000; display: none;
+    background: rgba(8,8,10,0.93); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    overflow: auto; padding: 3.2rem 1rem; }
+  .lightbox.open { display: block; }
+  .lightbox img { display: block; margin: 0 auto; width: auto; max-width: min(1000px, 94vw);
+    max-height: none; height: auto; border-radius: 8px; box-shadow: 0 30px 90px rgba(0,0,0,0.6); }
+  .lightbox-close { position: fixed; top: 1rem; right: 1.2rem; z-index: 1001;
+    width: 46px; height: 46px; border-radius: 50%; cursor: pointer; font-size: 1.6rem; line-height: 1;
+    color: #fff; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: background .3s ease; }
+  .lightbox-close:hover { background: rgba(255,255,255,0.24); }
+  .lightbox-cap { margin: 1rem auto 0; max-width: 1000px; text-align: center; color: #f2f2f5;
+    font-family: "Anton", Impact, sans-serif; text-transform: uppercase; letter-spacing: 0.03em; font-size: 1.4rem; }
+  footer {
+    padding: 1.4rem clamp(1.5rem, 4vw, 3.5rem); border-top: 1px solid rgba(255,255,255,0.10);
+    font-family: "Geist Mono", monospace; font-size: 0.72rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #d11a35;
+  }
+  /* mobile-subpage */
+  @media (max-width: 560px) {
+    header { padding: 1.1rem 1.25rem; }
+    .brand { display: none; }
+    main { padding-left: 1.25rem; padding-right: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <a class="back" href="../portfolio.html">&larr; Back to portfolio</a>
+    <span class="brand">Erick Sabando &middot; Arch Designer</span>
+  </header>
+  <main>
+    <div class="eyebrow">[ Drawings &amp; Sketches ]</div>
+    <h1>Drawings &amp; Sketches</h1>
+    <p class="lead">Hand drawings and concept sketches - sections, plans, and parti studies
+      worked out in pen and pencil. Click any sketch to enlarge.</p>
+    <div class="gallery">
+      <button class="shot" data-full="drawings-and-sketches/watering-hole-iso.jpg" data-cap="Concept ISO - Moments">
+        <div class="shot-frame"><img src="drawings-and-sketches/watering-hole-iso.jpg" alt="Concept ISO - Moments" loading="lazy" /></div>
+        <div class="shot-cap">Concept ISO &middot; ARC 302</div>
+      </button>
+      <button class="shot" data-full="drawings-and-sketches/east-elevation.jpg" data-cap="East Elevation">
+        <div class="shot-frame"><img src="drawings-and-sketches/east-elevation.jpg" alt="East Elevation" loading="lazy" /></div>
+        <div class="shot-cap">East Elevation &middot; ARC 302</div>
+      </button>
+      <button class="shot" data-full="drawings-and-sketches/floor-plan.jpg" data-cap="Floor Plan">
+        <div class="shot-frame"><img src="drawings-and-sketches/floor-plan.jpg" alt="Floor Plan" loading="lazy" /></div>
+        <div class="shot-cap">Floor Plan &middot; ARC 302</div>
+      </button>
+      <button class="shot" data-full="drawings-and-sketches/iso-parti-plan-2.jpg" data-cap="Plan 2 - ISO Parti">
+        <div class="shot-frame"><img src="drawings-and-sketches/iso-parti-plan-2.jpg" alt="Plan 2 - ISO Parti" loading="lazy" /></div>
+        <div class="shot-cap">Plan 2 &middot; ISO Parti</div>
+      </button>
+    </div>
+  </main>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" aria-label="Close">&times;</button>
+    <img id="lightbox-img" src="" alt="" />
+    <div class="lightbox-cap" id="lightbox-cap"></div>
+  </div>
+
+  <footer>&copy; 2025 - Erick Sabando</footer>
+
+  <script>
+    (function () {
+      var lb = document.getElementById('lightbox'),
+          img = document.getElementById('lightbox-img'),
+          cap = document.getElementById('lightbox-cap');
+      function open(src, label) {
+        img.src = src; img.alt = label || ''; cap.textContent = label || '';
+        lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true');
+        img.src = ''; document.body.style.overflow = '';
+      }
+      document.querySelectorAll('.shot').forEach(function (b) {
+        b.addEventListener('click', function () { open(b.dataset.full, b.dataset.cap); });
+      });
+      lb.addEventListener('click', function (e) {
+        if (e.target === lb || e.target.classList.contains('lightbox-close')) close();
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    })();
+  </script>
+</body>
+</html>
