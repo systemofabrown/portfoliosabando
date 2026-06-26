@@ -2325,23 +2325,13 @@
     return { update };
   })();
 
-  /* Single rAF loop drives Lenis + the canvases */
-  let _heroVisible = true, _filmVisible = false;
-  const _heroEl = document.getElementById('top');
-  const _filmEl = document.getElementById('section-film');
-  const _visObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.target === _heroEl) _heroVisible = e.isIntersecting;
-      if (e.target === _filmEl) _filmVisible = e.isIntersecting;
-    });
-  }, { threshold: 0 });
-  if (_heroEl) _visObs.observe(_heroEl);
-  if (_filmEl) _visObs.observe(_filmEl);
-
+  /* Single rAF loop drives Lenis + the canvases.
+     compass.update() self-throttles (only redraws when the scroll moves to a
+     new frame), and it's a whole-page scrub, so it must always run. */
   (function raf(now) {
     if (lenis) lenis.raf(now);
-    if (_heroVisible) compass.update();
-    if (_filmVisible) film.update();
+    compass.update();
+    film.update();
     requestAnimationFrame(raf);
   })(performance.now());
 
