@@ -450,6 +450,7 @@
     height: 100vh;
     z-index: 0;
     pointer-events: none;
+    will-change: transform;
     filter: contrast(1.2) brightness(0.96) saturate(1.05);
     opacity: 0;
     animation: compassFade 1.8s var(--ease-out) 0.2s forwards;
@@ -1541,6 +1542,7 @@
     inset: 0;
     z-index: 2;
     pointer-events: none;
+    will-change: transform;
   }
 
   /* ============================================================
@@ -2101,14 +2103,25 @@
     const FRAME_COUNT = 125;
     const framePath = (i) => `frames/hero/frame_${String(i).padStart(4, '0')}.jpg`;
 
-    // Preload the whole sequence so the scrub never stalls
+    // Load first 15 frames immediately for instant scrub response, batch-load the rest
     const frames = [];
-    for (let i = 0; i < FRAME_COUNT; i++) {
+    const EAGER = 15;
+    for (let i = 0; i < Math.min(EAGER, FRAME_COUNT); i++) {
       const im = new Image();
       im.onload = () => { if (i === 0 || reduced) draw(lastP); };
       im.src = framePath(i + 1);
       frames[i] = im;
     }
+    let _fLoaded = EAGER;
+    function _loadBatch() {
+      const end = Math.min(_fLoaded + 15, FRAME_COUNT);
+      for (let i = _fLoaded; i < end; i++) {
+        const im = new Image(); im.src = framePath(i + 1); frames[i] = im;
+      }
+      _fLoaded = end;
+      if (_fLoaded < FRAME_COUNT) setTimeout(_loadBatch, 300);
+    }
+    setTimeout(_loadBatch, 800);
 
     let lastIdx = -1, lastP = 0;
     function frameAt(idx) {
@@ -2275,7 +2288,7 @@
     resize(); addEventListener('resize', resize);
     const mouse = { x: W / 2, y: H / 2, sx: W / 2, sy: H / 2, active: false };
     addEventListener('pointermove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true; }, { passive: true });
-    const COUNT = Math.min(120, Math.max(48, (W * H / 15000) | 0));
+    const COUNT = Math.min(55, Math.max(24, (W * H / 30000) | 0));
     const P = [];
     for (let i = 0; i < COUNT; i++) {
       P.push({ x: Math.random() * W, y: Math.random() * H, vx: 0, vy: 0,
@@ -2317,10 +2330,22 @@
   })();
 
   /* Single rAF loop drives Lenis + the canvases */
+  let _heroVisible = true, _filmVisible = false;
+  const _heroEl = document.getElementById('top');
+  const _filmEl = document.getElementById('section-film');
+  const _visObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.target === _heroEl) _heroVisible = e.isIntersecting;
+      if (e.target === _filmEl) _filmVisible = e.isIntersecting;
+    });
+  }, { threshold: 0 });
+  if (_heroEl) _visObs.observe(_heroEl);
+  if (_filmEl) _visObs.observe(_filmEl);
+
   (function raf(now) {
     if (lenis) lenis.raf(now);
-    compass.update();
-    film.update();
+    if (_heroVisible) compass.update();
+    if (_filmVisible) film.update();
     particles.update(now);
     requestAnimationFrame(raf);
   })(performance.now());
