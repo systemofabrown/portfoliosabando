@@ -63,7 +63,7 @@
 </head>
 <body>
   <header>
-    <a class="back" href="../portfolio.html" onclick="try{sessionStorage.setItem(&#39;returnToProject&#39;,&#39;projects/&#39;+location.pathname.split(&#39;/&#39;).pop())}catch(e){}">&larr; Back to portfolio</a>
+    <a class="back" href="../portfolio.html" onclick="if(history.length>1){history.back();return false;}">&larr; Back to portfolio</a>
     <span class="brand">Erick Sabando &middot; Arch Designer</span>
   </header>
   <main>
