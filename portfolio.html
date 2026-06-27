@@ -2107,21 +2107,44 @@
     const jump = () => {
       // single engine only - mixing Lenis with native scrollTo desyncs and drifts
       if (window.__lenis) {
-        window.__lenis.scrollTo(card, { offset: -off(), immediate: true });
+        try { window.__lenis.resize(); } catch (e) {}  // refresh stale dims (slow live loads)
+        window.__lenis.scrollTo(card, { offset: -off(), immediate: true, force: true });
       } else {
         const y = Math.max(0, Math.round(card.getBoundingClientRect().top
                   + (window.scrollY || window.pageYOffset || 0) - off()));
         window.scrollTo(0, y);
       }
     };
-    // re-assert a few times so layout settling / late paints can't drift it,
-    // but stop immediately if the user starts scrolling themselves.
+    // re-assert a few times so layout settling / late paints (slow live image
+    // loads) can't drift it, but stop if the user starts scrolling themselves.
     let stop = false;
     ['wheel', 'touchstart', 'keydown'].forEach(ev =>
       window.addEventListener(ev, () => { stop = true; }, { once: true, passive: true }));
     jump();
-    [80, 200, 450, 900].forEach(t => setTimeout(() => { if (!stop) jump(); }, t));
+    [80, 200, 450, 900, 1500, 2500].forEach(t => setTimeout(() => { if (!stop) jump(); }, t));
     window.addEventListener('load', () => { if (!stop) jump(); });
+
+    // TEMP DIAGNOSTIC - shows what the restore actually did on the live site.
+    // Remove once confirmed. Append ?nodebug to the URL to hide it.
+    if (location.search.indexOf('nodebug') === -1) {
+      setTimeout(function () {
+        var b = document.createElement('div');
+        b.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:99999;max-width:92vw;'
+          + 'background:rgba(0,0,0,.85);color:#fff;font:11px/1.4 monospace;padding:8px 10px;'
+          + 'border:1px solid #d11a35;border-radius:6px;white-space:pre-wrap';
+        b.textContent =
+          'return-to-card debug\n'
+          + 'target: ' + ret + '\n'
+          + 'cardFound: ' + !!card + '\n'
+          + 'lenis: ' + !!window.__lenis + '\n'
+          + 'referrer: ' + (document.referrer || '(empty)') + '\n'
+          + 'scrollY now: ' + Math.round(window.scrollY) + '\n'
+          + 'cardTop: ' + Math.round(card.getBoundingClientRect().top);
+        b.addEventListener('click', function () { b.remove(); });
+        document.body.appendChild(b);
+        setTimeout(function () { b.remove(); }, 12000);
+      }, 1800);
+    }
   })();
 
   document.querySelectorAll('a[href^="#"]').forEach(a => {
