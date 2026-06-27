@@ -2081,13 +2081,16 @@
      that project's thumbnail instead of the page top. Primary signal is the
      referrer (where we navigated from); a stored click is a secondary fallback. */
   (function () {
+    // Take over scroll so the browser's "reset to top on fresh navigation"
+    // can't fight us (this race is what sent the page to the top on the live site).
+    if ('scrollRestoration' in history) { try { history.scrollRestoration = 'manual'; } catch (e) {} }
     // secondary: remember the clicked card (covers same-page back/forward)
     document.querySelectorAll('a[href^="projects/"]').forEach(a => {
       a.addEventListener('click', () => {
         try { sessionStorage.setItem('returnToProject', a.getAttribute('href')); } catch (e) {}
       });
     });
-    // primary: did we just come from a project page?
+    // which project did we come back from? referrer first, stored click second.
     let ret = null;
     try {
       const m = (document.referrer || '').match(/projects\/[^\/?#]+\.html/);
@@ -2099,16 +2102,26 @@
     const card = document.querySelector('.project[href="' + ret + '"]')
               || document.querySelector('a[href="' + ret + '"]');
     if (!card) return;
+    card.classList.add('in');                          // make sure it's revealed
+    const off = () => Math.round(window.innerHeight * 0.22);
     const jump = () => {
-      card.classList.add('in');                       // make sure it's revealed
-      const off = -Math.round(window.innerHeight * 0.22);
-      if (window.__lenis) window.__lenis.scrollTo(card, { offset: off, immediate: true });
-      else card.scrollIntoView({ block: 'center' });
+      // single engine only - mixing Lenis with native scrollTo desyncs and drifts
+      if (window.__lenis) {
+        window.__lenis.scrollTo(card, { offset: -off(), immediate: true });
+      } else {
+        const y = Math.max(0, Math.round(card.getBoundingClientRect().top
+                  + (window.scrollY || window.pageYOffset || 0) - off()));
+        window.scrollTo(0, y);
+      }
     };
-    requestAnimationFrame(() => requestAnimationFrame(jump));
-    setTimeout(jump, 250);                             // settle after images load
-    setTimeout(jump, 800);
-    window.addEventListener('load', jump);
+    // re-assert a few times so layout settling / late paints can't drift it,
+    // but stop immediately if the user starts scrolling themselves.
+    let stop = false;
+    ['wheel', 'touchstart', 'keydown'].forEach(ev =>
+      window.addEventListener(ev, () => { stop = true; }, { once: true, passive: true }));
+    jump();
+    [80, 200, 450, 900].forEach(t => setTimeout(() => { if (!stop) jump(); }, t));
+    window.addEventListener('load', () => { if (!stop) jump(); });
   })();
 
   document.querySelectorAll('a[href^="#"]').forEach(a => {
