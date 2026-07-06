@@ -1303,6 +1303,65 @@
   }
   .download-cta svg { width: 16px; height: 16px; flex: none; }
 
+  /* About - downloadable CV */
+  .about-cv { display: flex; margin-top: 1.8rem; }
+
+  /* Contact form - liquid glass fields */
+  .contact-form {
+    width: min(560px, 100%);
+    margin: 2.6rem auto 0;
+    display: grid;
+    gap: 1rem;
+    text-align: left;
+  }
+  .hp-field { position: absolute; left: -9999px; opacity: 0; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+  .form-field label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--fg-dim);
+    margin-bottom: 0.45rem;
+  }
+  .contact-form input[type="text"],
+  .contact-form input[type="email"],
+  .contact-form textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.07);
+    -webkit-backdrop-filter: blur(2px) saturate(150%) brightness(1.06);
+    backdrop-filter: blur(2px) saturate(150%) brightness(1.06);
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    box-shadow: inset 0 1px 1.5px rgba(255,255,255,0.35), 0 6px 18px rgba(0,0,0,0.18);
+    color: var(--fg);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.25s ease, background-color 0.25s ease;
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.65);
+    background-color: rgba(255, 255, 255, 0.10);
+  }
+  .contact-form textarea { min-height: 140px; resize: vertical; }
+  .form-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .form-submit { cursor: pointer; }
+  .form-status {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+  }
+  .form-status.ok { color: #9fe6b0; }
+  .form-status.err { color: #f2a5b0; }
+  .contact-location { cursor: default; }
+
   .contact-details {
     margin-top: 2.75rem;
     display: flex;
@@ -1622,7 +1681,6 @@
     <span>Phoenix, AZ</span>
   </div>
   <ul>
-    <li><a href="#about">About</a></li>
     <li class="nav-work">
       <a href="#work">Work</a>
       <div class="work-menu">
@@ -1635,8 +1693,9 @@
         <a href="projects/drawings-and-sketches.html">Drawings &amp; Sketches</a>
       </div>
     </li>
-    <li><a href="#experience">Experience</a></li>
     <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#about">About</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Get in touch</a>
   <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
@@ -1647,7 +1706,6 @@
 <!-- Mobile menu overlay -->
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <nav class="mm-nav">
-    <a href="#about">About</a>
     <div class="mm-group">
       <a href="#work" class="mm-head">Work</a>
       <div class="mm-sub">
@@ -1660,8 +1718,9 @@
         <a href="projects/drawings-and-sketches.html">Drawings &amp; Sketches</a>
       </div>
     </div>
-    <a href="#experience">Experience</a>
     <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#about">About</a>
     <a href="#contact" class="mm-cta">Get in touch</a>
   </nav>
 </div>
@@ -1679,79 +1738,10 @@
   </div>
 </section>
 
-<!-- =================== ABOUT =================== -->
-<section id="about">
-  <div class="section-head">
-    <div class="section-num">[ 01 / About ]</div>
-    <h2 class="section-title">About <em>me</em>.</h2>
-  </div>
-
-  <div class="container">
-    <div class="about-grid">
-      <div class="about-portrait reveal">
-        <div class="portrait-caption">
-          <span>fig. III</span> Erick Sabando - Arch Designer
-        </div>
-      </div>
-
-      <div class="about-prose reveal">
-        <p>
-          I'm <em>Erick Sabando</em> - an architectural design &amp; visualization
-          artist focused on the intersection of craft, systems thinking, and storytelling.
-        </p>
-        <p>
-          My work spans from <strong>conceptual ideation</strong> to tried and true
-          building methods and experience. From speculative research and development
-          to final design. I care about the details that separate
-          <strong>mundane</strong> from <strong>anomalous</strong>.
-        </p>
-        <p>
-          Currently exploring how generative tools can extend, rather than replace,
-          the designer's hand. Also, exploring immersive real-time rendering
-          techniques that allow viewers to experience a developing design through
-          third-person, first-person, and virtual reality - supplementing traditional
-          delivery methods like not only static and fly-through renderings but
-          interactive schematics and technical drawings. Putting stakeholders in
-          the driver's seat as if they were playing an open-world video game.
-        </p>
-
-        <div class="about-stats">
-          <div class="stat">
-            <div class="stat-eyebrow">[ Education ]</div>
-            <div class="stat-heading">4th Year <em>BSD Architecture Studies</em></div>
-            <div class="stat-detail">Arizona State University - minor in Construction Management.</div>
-            <a href="asu-dars-transcript.pdf" class="stat-link" data-doc="asu-dars-transcript.pdf" data-doc-title="Degree Audit <em>- BSD Architectural Studies</em>" data-doc-meta="Arizona State University · 2026">
-              View transcript <span class="arrow">↗</span>
-            </a>
-          </div>
-
-          <div class="stat">
-            <div class="stat-eyebrow">[ Credential ]</div>
-            <div class="stat-heading">Associate's, <em>Animation</em> &amp; Time-Based Media</div>
-            <div class="stat-detail">Multidisciplinary foundation in motion, narrative, and visual storytelling.</div>
-            <a href="mcc-animation-certificate.png" class="stat-link" data-doc="mcc-animation-certificate.png" data-doc-title="Associate's in Animation &amp; Time-Based Media" data-doc-meta="Mesa Community College · 2024">
-              View certificate <span class="arrow">↗</span>
-            </a>
-          </div>
-
-          <div class="stat">
-            <div class="stat-eyebrow">[ Honor ]</div>
-            <div class="stat-heading">Design Excellence Award <em>- Spring 2026</em></div>
-            <div class="stat-detail">Most recent recognition for outstanding studio work.</div>
-            <a href="design-excellence-spring-2026.png" class="stat-link" data-doc="design-excellence-spring-2026.png" data-doc-title="Design Excellence Award <em>- Spring 2026</em>" data-doc-meta="Arizona State University · The Design School">
-              View certificate <span class="arrow">↗</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- =================== WORK =================== -->
 <section id="work">
   <div class="section-head">
-    <div class="section-num">[ 02 / Work ]</div>
+    <div class="section-num">[ 01 / Work ]</div>
     <h2 class="section-title">Selected <em>work</em>.</h2>
   </div>
 
@@ -1829,72 +1819,10 @@
   </div>
 </section>
 
-<!-- =================== EXPERIENCE =================== -->
-<section id="experience">
-  <div class="section-head">
-    <div class="section-num">[ 03 / Experience ]</div>
-    <h2 class="section-title">Recent &amp; relevant <em>experience</em>.</h2>
-  </div>
-
-  <div class="container">
-    <div class="timeline">
-      <div class="role reveal">
-        <div class="role-period">Jul 2025 - Present</div>
-        <div class="role-info">
-          <h3>Independent <em>- Gig Economy</em></h3>
-          <div class="company">DoorDash · Spark</div>
-          <p>Flexible delivery work balanced alongside full-time studio coursework at ASU. Self-managed routing, time, and customer interactions across both platforms.</p>
-        </div>
-        <div class="role-tags"><span>Independent</span><span>Logistics</span></div>
-      </div>
-
-      <div class="role reveal">
-        <div class="role-period">Mar 2022 - Nov 2024</div>
-        <div class="role-info">
-          <h3>Resource Coordinator</h3>
-          <div class="company">Happy Kids Pediatrics &amp; Feliz Care Centers</div>
-          <p>Coordinated appointment scheduling, insurance verification, and the processing and distribution of referrals to ensure patients connected with appropriate specialists. Adhered to HIPAA standards throughout to maintain patient confidentiality.</p>
-        </div>
-        <div class="role-tags"><span>Coordination</span><span>Healthcare</span><span>Compliance</span></div>
-      </div>
-
-      <div class="role reveal">
-        <div class="role-period">Oct 2019 - Mar 2022</div>
-        <div class="role-info">
-          <h3>Parcel Delivery Driver</h3>
-          <div class="company">OnTrac</div>
-          <p>Planned routes and managed truck loading to ensure time-efficient, accurate parcel distribution. Hand-delivered commercial freight and collected signatures from responsible parties.</p>
-        </div>
-        <div class="role-tags"><span>Logistics</span><span>Routing</span></div>
-      </div>
-
-      <div class="role reveal">
-        <div class="role-period">Jun 2008 - Jun 2012</div>
-        <div class="role-info">
-          <h3>Utilities <em>- Generator Mechanic &amp; Electrical Wiring Tech</em></h3>
-          <div class="company">United States Marine Corps</div>
-          <p>Coordinated setup, maintenance, and repair of field power generation units and components. Operated to the standards set forth by the USMC across deployments and field environments.</p>
-        </div>
-        <div class="role-tags"><span>Military</span><span>Mechanical</span><span>Systems</span></div>
-      </div>
-
-      <div class="role reveal">
-        <div class="role-period">Jun 2006 - Dec 2007</div>
-        <div class="role-info">
-          <h3>Excavation Laborer</h3>
-          <div class="company">John J. Skalley</div>
-          <p>Assisted and executed excavation operations for foundations, drainage ditches, and site preparation - early hands-on exposure to the realities of construction sequencing and site work.</p>
-        </div>
-        <div class="role-tags"><span>Construction</span><span>Site Work</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- =================== SKILLS =================== -->
 <section id="skills">
   <div class="section-head">
-    <div class="section-num">[ 04 / Skills ]</div>
+    <div class="section-num">[ 02 / Skills ]</div>
     <h2 class="section-title"><em>Skills</em>.</h2>
   </div>
 
@@ -1960,6 +1888,148 @@
   </div>
 </section>
 
+<!-- =================== EXPERIENCE =================== -->
+<section id="experience">
+  <div class="section-head">
+    <div class="section-num">[ 03 / Experience ]</div>
+    <h2 class="section-title">Recent &amp; relevant <em>experience</em>.</h2>
+  </div>
+
+  <div class="container">
+    <div class="timeline">
+      <div class="role reveal">
+        <div class="role-period">Jul 2025 - Present</div>
+        <div class="role-info">
+          <h3>Independent <em>- Gig Economy</em></h3>
+          <div class="company">DoorDash · Spark</div>
+          <p>Flexible delivery work balanced alongside full-time studio coursework at ASU. Self-managed routing, time, and customer interactions across both platforms.</p>
+        </div>
+        <div class="role-tags"><span>Independent</span><span>Logistics</span></div>
+      </div>
+
+      <div class="role reveal">
+        <div class="role-period">Mar 2022 - Nov 2024</div>
+        <div class="role-info">
+          <h3>Resource Coordinator</h3>
+          <div class="company">Happy Kids Pediatrics &amp; Feliz Care Centers</div>
+          <p>Coordinated appointment scheduling, insurance verification, and the processing and distribution of referrals to ensure patients connected with appropriate specialists. Adhered to HIPAA standards throughout to maintain patient confidentiality.</p>
+        </div>
+        <div class="role-tags"><span>Coordination</span><span>Healthcare</span><span>Compliance</span></div>
+      </div>
+
+      <div class="role reveal">
+        <div class="role-period">Oct 2019 - Mar 2022</div>
+        <div class="role-info">
+          <h3>Parcel Delivery Driver</h3>
+          <div class="company">OnTrac</div>
+          <p>Planned routes and managed truck loading to ensure time-efficient, accurate parcel distribution. Hand-delivered commercial freight and collected signatures from responsible parties.</p>
+        </div>
+        <div class="role-tags"><span>Logistics</span><span>Routing</span></div>
+      </div>
+
+      <div class="role reveal">
+        <div class="role-period">Jun 2008 - Jun 2012</div>
+        <div class="role-info">
+          <h3>Utilities <em>- Generator Mechanic &amp; Electrical Wiring Tech</em></h3>
+          <div class="company">United States Marine Corps</div>
+          <p>Coordinated setup, maintenance, and repair of field power generation units and components. Operated to the standards set forth by the USMC across deployments and field environments.</p>
+        </div>
+        <div class="role-tags"><span>Military</span><span>Mechanical</span><span>Systems</span></div>
+      </div>
+
+      <div class="role reveal">
+        <div class="role-period">Jun 2006 - Dec 2007</div>
+        <div class="role-info">
+          <h3>Excavation Laborer</h3>
+          <div class="company">John J. Skalley</div>
+          <p>Assisted and executed excavation operations for foundations, drainage ditches, and site preparation - early hands-on exposure to the realities of construction sequencing and site work.</p>
+        </div>
+        <div class="role-tags"><span>Construction</span><span>Site Work</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== ABOUT =================== -->
+<section id="about">
+  <div class="section-head">
+    <div class="section-num">[ 04 / About ]</div>
+    <h2 class="section-title">About <em>me</em>.</h2>
+  </div>
+
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-portrait reveal">
+        <div class="portrait-caption">
+          <span>fig. III</span> Erick Sabando - Arch Designer
+        </div>
+      </div>
+
+      <div class="about-prose reveal">
+        <p>
+          I'm <em>Erick Sabando</em> - an architectural design &amp; visualization
+          artist focused on the intersection of craft, systems thinking, and storytelling.
+        </p>
+        <p>
+          My work spans from <strong>conceptual ideation</strong> to tried and true
+          building methods and experience. From speculative research and development
+          to final design. I care about the details that separate
+          <strong>mundane</strong> from <strong>anomalous</strong>.
+        </p>
+        <p>
+          Currently exploring how generative tools can extend, rather than replace,
+          the designer's hand. Also, exploring immersive real-time rendering
+          techniques that allow viewers to experience a developing design through
+          third-person, first-person, and virtual reality - supplementing traditional
+          delivery methods like not only static and fly-through renderings but
+          interactive schematics and technical drawings. Putting stakeholders in
+          the driver's seat as if they were playing an open-world video game.
+        </p>
+
+        <div class="about-stats">
+          <div class="stat">
+            <div class="stat-eyebrow">[ Education ]</div>
+            <div class="stat-heading">4th Year <em>BSD Architecture Studies</em></div>
+            <div class="stat-detail">Arizona State University - minor in Construction Management.</div>
+            <a href="asu-dars-transcript.pdf" class="stat-link" data-doc="asu-dars-transcript.pdf" data-doc-title="Degree Audit <em>- BSD Architectural Studies</em>" data-doc-meta="Arizona State University · 2026">
+              View transcript <span class="arrow">↗</span>
+            </a>
+          </div>
+
+          <div class="stat">
+            <div class="stat-eyebrow">[ Credential ]</div>
+            <div class="stat-heading">Associate's, <em>Animation</em> &amp; Time-Based Media</div>
+            <div class="stat-detail">Multidisciplinary foundation in motion, narrative, and visual storytelling.</div>
+            <a href="mcc-animation-certificate.png" class="stat-link" data-doc="mcc-animation-certificate.png" data-doc-title="Associate's in Animation &amp; Time-Based Media" data-doc-meta="Mesa Community College · 2024">
+              View certificate <span class="arrow">↗</span>
+            </a>
+          </div>
+
+          <div class="stat">
+            <div class="stat-eyebrow">[ Honor ]</div>
+            <div class="stat-heading">Design Excellence Award <em>- Spring 2026</em></div>
+            <div class="stat-detail">Most recent recognition for outstanding studio work.</div>
+            <a href="design-excellence-spring-2026.png" class="stat-link" data-doc="design-excellence-spring-2026.png" data-doc-title="Design Excellence Award <em>- Spring 2026</em>" data-doc-meta="Arizona State University · The Design School">
+              View certificate <span class="arrow">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="about-cv">
+          <a href="Erick_Sabando_Resume.pdf" class="download-cta" download="Erick Sabando - Resume.pdf">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download CV (PDF)
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- =================== CONTACT =================== -->
 <section class="contact" id="contact">
   <div class="contact-eyebrow">Let's build something</div>
@@ -1985,7 +2055,39 @@
     </a>
   </div>
 
+  <form class="contact-form reveal" id="contactForm" name="contact" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="contact" />
+    <p class="hp-field" aria-hidden="true"><label>Don't fill this out: <input name="bot-field" /></label></p>
+    <div class="form-row">
+      <div class="form-field">
+        <label for="cfName">Name</label>
+        <input id="cfName" name="name" type="text" autocomplete="name" required />
+      </div>
+      <div class="form-field">
+        <label for="cfEmail">Email</label>
+        <input id="cfEmail" name="email" type="email" autocomplete="email" required />
+      </div>
+    </div>
+    <div class="form-field">
+      <label for="cfMessage">Message</label>
+      <textarea id="cfMessage" name="message" required></textarea>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="download-cta form-submit">Send message</button>
+      <span class="form-status" id="formStatus" role="status" aria-live="polite"></span>
+    </div>
+  </form>
+
   <div class="contact-details">
+    <div class="contact-row">
+      <span class="contact-detail contact-location">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        Phoenix / Gilbert, AZ
+      </span>
+    </div>
     <div class="contact-row">
       <a href="mailto:emsabandocastro@gmail.com" class="contact-detail">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -2356,6 +2458,30 @@
   document.querySelectorAll('.reveal').forEach((el, i) => {
     el.style.transitionDelay = `${(i % 4) * 0.08}s`;
     io.observe(el);
+  });
+
+  // Contact form - AJAX submit to Netlify Forms (no page navigation)
+  const cform = document.getElementById('contactForm');
+  const fstatus = document.getElementById('formStatus');
+  if (cform) cform.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = cform.querySelector('.form-submit');
+    btn.disabled = true;
+    fstatus.textContent = 'Sending…';
+    fstatus.classList.remove('ok', 'err');
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(cform)).toString()
+    }).then((r) => {
+      if (!r.ok) throw new Error(r.status);
+      cform.reset();
+      fstatus.textContent = 'Message sent - thank you!';
+      fstatus.classList.add('ok');
+    }).catch(() => {
+      fstatus.textContent = 'Something went wrong - email me instead.';
+      fstatus.classList.add('err');
+    }).finally(() => { btn.disabled = false; });
   });
 
   // Copy-to-clipboard with toast + button check-icon feedback
