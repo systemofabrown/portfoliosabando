@@ -367,21 +367,28 @@
   /* name + title row */
   .hero-id {
     display: flex;
+    flex-direction: column;   /* name + ARCH on top, remaining titles below */
+    align-items: flex-start;
+    gap: 0.55rem;
+    margin-top: 0.7rem;
+    margin-bottom: 0;
+  }
+  .hero-id-row {
+    display: flex;
     align-items: baseline;
     flex-wrap: wrap;
     gap: 0.6rem 1.3rem;
-    margin-top: 0.7rem;       /* sits just under PORTFOLIO, at the very bottom */
-    margin-bottom: 0;
   }
   .hero-name {
     font-family: var(--sans);
     font-weight: 700;
-    font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);      /* +15% */
     color: var(--fg);
     letter-spacing: 0.005em;
     text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
     margin: 0;                /* h1 now - strip the UA default margins */
   }
+  .hero-title-arch { font-size: 1.035rem; }     /* +15% over the 0.9rem titles */
   .hero-title {
     font-family: var(--mono);
     font-weight: 500;
@@ -1717,11 +1724,15 @@
   <div class="hero-stage">
     <div class="hero-copy">
       <div class="hero-id">
-        <h1 class="hero-name">Erick Sabando</h1>
-        <span class="hero-title">Arch</span>
-        <span class="hero-title">Designer</span>
-        <span class="hero-title">Drafter</span>
-        <span class="hero-title">Visualization Artist</span>
+        <div class="hero-id-row">
+          <h1 class="hero-name">Erick Sabando</h1>
+          <span class="hero-title hero-title-arch">Arch</span>
+        </div>
+        <div class="hero-id-row">
+          <span class="hero-title">Designer</span>
+          <span class="hero-title">Drafter</span>
+          <span class="hero-title">Visualization Artist</span>
+        </div>
       </div>
     </div>
   </div>
