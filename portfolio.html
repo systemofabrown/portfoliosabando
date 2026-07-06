@@ -378,14 +378,17 @@
     margin: 0;
     text-shadow: 0 1px 0 rgba(255,255,255,0.5), 0 4px 24px rgba(0,0,0,0.4), 0 0 26px rgba(255,255,255,0.18);
     position: absolute;
-    left: 24vw;
-    bottom: 20vh;
+    left: auto;
+    right: 4vw;
+    bottom: 14vh;
     z-index: 4;
     white-space: nowrap;
     transform-origin: 50% 100%;
-    transform: perspective(1100px) rotateX(56deg) rotateZ(-5deg) translateX(var(--pf-slide, 0px));
+    transform: perspective(1000px) rotateX(58deg) rotateZ(-9deg) translateX(var(--pf-slide, 0px));
     will-change: transform, opacity;
     pointer-events: none;
+    opacity: 0;
+    animation: compassFade 1.2s var(--ease-out) 0.15s forwards;
   }
   /* name + title row */
   .hero-id {
@@ -501,12 +504,6 @@
     opacity: 0;
     transform: translateY(26px);
     animation: heroRise 1.2s var(--ease-out) forwards;
-  }
-  .hero-copy .hero-portfolio {
-    /* opacity-only entrance - heroRise animates transform, which would
-       flatten the ground-plane projection mid-animation */
-    animation: compassFade 1.2s var(--ease-out) 0.15s forwards;
-    transform: perspective(1100px) rotateX(56deg) rotateZ(-5deg) translateX(var(--pf-slide, 0px));
   }
   .hero-copy .hero-id { animation-delay: 0.38s; }
   .hero-copy .hero-actions { animation-delay: 0.55s; }
@@ -1743,8 +1740,8 @@
 <!-- =================== HERO =================== -->
 <section class="hero" id="top">
   <div class="hero-stage">
+    <h1 class="hero-portfolio">Portfolio</h1>
     <div class="hero-copy">
-      <h1 class="hero-portfolio">Portfolio</h1>
       <div class="hero-id">
         <span class="hero-name">Erick Sabando</span>
         <span class="hero-title">Arch</span>
