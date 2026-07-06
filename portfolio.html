@@ -364,7 +364,8 @@
     margin-top: 0;
     padding-left: clamp(1.5rem, 3.5vw, 3rem);   /* nudge the landing text right */
   }
-  /* tall, bold, Impact-style PORTFOLIO - anchored to the bottom */
+  /* PORTFOLIO lies flat on the ground plane of the render (centre-right)
+     and slides off to the right on scroll (--pf-slide driven from JS). */
   .hero-portfolio {
     font-family: var(--display);
     font-weight: 400;                 /* Anton is a single heavy weight */
@@ -376,6 +377,15 @@
     text-transform: uppercase;
     margin: 0;
     text-shadow: 0 1px 0 rgba(255,255,255,0.5), 0 4px 24px rgba(0,0,0,0.4), 0 0 26px rgba(255,255,255,0.18);
+    position: absolute;
+    left: 24vw;
+    bottom: 20vh;
+    z-index: 4;
+    white-space: nowrap;
+    transform-origin: 50% 100%;
+    transform: perspective(1100px) rotateX(56deg) rotateZ(-5deg) translateX(var(--pf-slide, 0px));
+    will-change: transform, opacity;
+    pointer-events: none;
   }
   /* name + title row */
   .hero-id {
@@ -492,7 +502,12 @@
     transform: translateY(26px);
     animation: heroRise 1.2s var(--ease-out) forwards;
   }
-  .hero-copy .hero-portfolio { animation-delay: 0.15s; }
+  .hero-copy .hero-portfolio {
+    /* opacity-only entrance - heroRise animates transform, which would
+       flatten the ground-plane projection mid-animation */
+    animation: compassFade 1.2s var(--ease-out) 0.15s forwards;
+    transform: perspective(1100px) rotateX(56deg) rotateZ(-5deg) translateX(var(--pf-slide, 0px));
+  }
   .hero-copy .hero-id { animation-delay: 0.38s; }
   .hero-copy .hero-actions { animation-delay: 0.55s; }
   @keyframes heroRise {
@@ -2615,6 +2630,11 @@
         var max = document.documentElement.scrollHeight - window.innerHeight;
         pfill.style.transform = 'scaleY(' + (max > 0 ? Math.min(1, y / max) : 0) + ')';
       }
+      // PORTFOLIO slides off the ground to the right over the first ~80vh
+      var hh = window.innerHeight || 1;
+      var sp = Math.max(0, Math.min(1, y / (hh * 0.8)));
+      if (!isFinite(sp)) sp = 0;
+      document.documentElement.style.setProperty('--pf-slide', (sp * sp * 150) + 'vw');
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
