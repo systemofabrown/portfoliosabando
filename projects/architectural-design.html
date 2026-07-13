@@ -40,6 +40,12 @@
     font-family: "Geist Mono", monospace; color: #a51c30; text-transform: uppercase;
     letter-spacing: 0.22em; font-size: 0.8rem; margin-bottom: 1rem;
   }
+  .cat-label {
+    font-family: "Geist Mono", monospace; color: #a51c30; text-transform: uppercase;
+    letter-spacing: 0.22em; font-size: 0.82rem;
+    margin-top: 3.75rem; padding-top: 1.6rem; border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .cat-label + .work-grid { margin-top: 1.4rem; }
   h1 {
     font-family: "Anton", "Impact", sans-serif; text-transform: uppercase;
     font-size: clamp(3rem, 13vw, 9rem); line-height: 0.9; letter-spacing: 0.02em;
@@ -106,6 +112,8 @@
     <div class="eyebrow">[ Selected Work ]</div>
     <h1>Architectural Design</h1>
     <p class="lead">Studio design work - concept through final presentation.</p>
+
+    <div class="cat-label">[ Studio Projects ]</div>
     <div class="work-grid">
       <a class="card" href="architectural-design/final-presentation.pdf" target="_blank" rel="noopener">
         <div class="card-visual">
@@ -125,6 +133,19 @@
         <div class="card-title">The Moonlight Library</div>
         <div class="card-desc">A lakeside library on Tempe Town Lake - where imagination meets the water.</div>
         <div class="card-open">Enlarge board &rarr;</div>
+      </a>
+    </div>
+
+    <div class="cat-label">[ Landscape Design ]</div>
+    <div class="work-grid">
+      <a class="card" href="architectural-design/my-backyard-project.jpg" data-lightbox>
+        <div class="card-visual">
+          <img src="architectural-design/my-backyard-project.jpg" alt="My Backyard Project" />
+          <span class="card-tag">Landscape &middot; Personal</span>
+        </div>
+        <div class="card-title">My Backyard Project</div>
+        <div class="card-desc">A personal landscape design for my own backyard.</div>
+        <div class="card-open">Enlarge image &rarr;</div>
       </a>
     </div>
   </main>
