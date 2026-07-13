@@ -86,8 +86,9 @@
     background: rgba(8,8,10,0.93); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
     overflow: auto; padding: 3.2rem 1rem; }
   .lightbox.open { display: block; }
-  .lightbox img { display: block; margin: 0 auto; width: min(920px, 94vw); height: auto;
+  .lightbox img { display: block; margin: 0 auto 1.1rem; width: min(920px, 94vw); height: auto;
     border-radius: 8px; box-shadow: 0 30px 90px rgba(0,0,0,0.6); }
+  .lightbox img:last-of-type { margin-bottom: 0; }
   .lightbox-close { position: fixed; top: 1rem; right: 1.2rem; z-index: 1001;
     width: 46px; height: 46px; border-radius: 50%; cursor: pointer; font-size: 1.6rem; line-height: 1;
     color: #fff; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3);
@@ -138,24 +139,15 @@
 
     <div class="cat-label">[ Landscape Design ]</div>
     <div class="work-grid">
-      <a class="card" href="architectural-design/my-backyard-project.jpg" data-lightbox>
+      <a class="card" href="architectural-design/my-backyard-project.jpg" data-lightbox
+         data-images="architectural-design/my-backyard-project.jpg, architectural-design/my-front-yard-project.jpg">
         <div class="card-visual">
           <img src="architectural-design/my-backyard-project.jpg" alt="My Backyard Project" />
           <span class="card-tag">Landscape &middot; Personal</span>
         </div>
         <div class="card-title">My Backyard Project</div>
-        <div class="card-desc">A personal landscape design for my own backyard.</div>
-        <div class="card-open">Enlarge image &rarr;</div>
-      </a>
-
-      <a class="card" href="architectural-design/my-front-yard-project.jpg" data-lightbox>
-        <div class="card-visual">
-          <img src="architectural-design/my-front-yard-project.jpg" alt="My Front Yard Project" />
-          <span class="card-tag">Landscape &middot; Personal</span>
-        </div>
-        <div class="card-title">My Front Yard Project</div>
-        <div class="card-desc">A personal landscape design for my own front yard.</div>
-        <div class="card-open">Enlarge image &rarr;</div>
+        <div class="card-desc">A personal landscape design for my own yard - back &amp; front.</div>
+        <div class="card-open">View renders &rarr;</div>
       </a>
     </div>
   </main>
@@ -163,27 +155,34 @@
 
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <button class="lightbox-close" aria-label="Close">&times;</button>
-    <img id="lightbox-img" src="" alt="" />
+    <div id="lightbox-imgs"></div>
     <div class="lightbox-cap" id="lightbox-cap"></div>
   </div>
   <script>
     (function () {
       var lb = document.getElementById('lightbox'),
-          img = document.getElementById('lightbox-img'),
+          wrap = document.getElementById('lightbox-imgs'),
           cap = document.getElementById('lightbox-cap');
-      function open(src, alt) {
-        img.src = src; img.alt = alt || ''; cap.textContent = alt || '';
+      function open(srcs, alt) {
+        wrap.innerHTML = '';
+        srcs.forEach(function (s) {
+          var im = document.createElement('img'); im.src = s; im.alt = alt || ''; wrap.appendChild(im);
+        });
+        cap.textContent = alt || '';
         lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
+        lb.scrollTop = 0; document.body.style.overflow = 'hidden';
       }
       function close() {
         lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true');
-        img.src = ''; document.body.style.overflow = '';
+        wrap.innerHTML = ''; document.body.style.overflow = '';
       }
       document.querySelectorAll('[data-lightbox]').forEach(function (a) {
         a.addEventListener('click', function (e) {
           e.preventDefault();
-          open(a.getAttribute('href'), a.querySelector('img') && a.querySelector('img').alt);
+          var multi = a.getAttribute('data-images');
+          var list = multi ? multi.split(',').map(function (s) { return s.trim(); }) : [a.getAttribute('href')];
+          var alt = a.querySelector('img') && a.querySelector('img').alt;
+          open(list, alt);
         });
       });
       lb.addEventListener('click', function (e) {
