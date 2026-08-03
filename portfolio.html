@@ -390,11 +390,11 @@
     gap: 0.6rem 1.3rem;
   }
   .hero-name {
-    font-family: var(--sans);
-    font-weight: 700;
-    font-size: clamp(1.5rem, 3vw, 2.2rem);      /* +15% */
+    font-family: "Impact", "Anton", "Haettenschweiler", sans-serif;  /* match PDF portfolio cover */
+    font-weight: 400;
+    font-size: clamp(1.8rem, 3.6vw, 2.64rem);   /* +20% */
     color: var(--fg);
-    letter-spacing: 0.005em;
+    letter-spacing: 0.01em;
     text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
     margin: 0;                /* h1 now - strip the UA default margins */
   }
@@ -469,12 +469,12 @@
     pointer-events: none;
     /* dramatic vignette - dark, heavy corners frame the render */
     background:
-      radial-gradient(ellipse 112% 112% at 50% 46%,
-        transparent 24%,
-        rgba(0, 0, 0, 0.22) 50%,
-        rgba(0, 0, 0, 0.50) 72%,
-        rgba(0, 0, 0, 0.82) 89%,
-        rgba(0, 0, 0, 0.97) 100%);
+      radial-gradient(ellipse 110% 110% at 50% 46%,
+        transparent 22%,
+        rgba(0, 0, 0, 0.24) 48%,
+        rgba(0, 0, 0, 0.56) 70%,
+        rgba(0, 0, 0, 0.90) 87%,
+        rgba(0, 0, 0, 1) 100%);
   }
   /* Cinematic film grain - lightweight (no blend-mode), subtle animated boil */
   .fx-grain {
@@ -482,17 +482,17 @@
     inset: 0;
     z-index: 2;
     pointer-events: none;
-    opacity: 0.16;
+    opacity: 0.18;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 180px 180px;
     background-repeat: repeat;
     animation: grainBoil 0.5s steps(1) infinite;
   }
   @keyframes grainBoil {
-    0%   { background-position: 0 0; opacity: 0.13; }
-    33%  { background-position: -7px 5px; opacity: 0.18; }
-    66%  { background-position: 5px -6px; opacity: 0.13; }
-    100% { background-position: -4px -3px; opacity: 0.17; }
+    0%   { background-position: 0 0; opacity: 0.15; }
+    33%  { background-position: -7px 5px; opacity: 0.21; }
+    66%  { background-position: 5px -6px; opacity: 0.15; }
+    100% { background-position: -4px -3px; opacity: 0.20; }
   }
   @media (prefers-reduced-motion: reduce) { .fx-grain { animation: none; } }
 
