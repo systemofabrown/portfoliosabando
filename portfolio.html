@@ -19,7 +19,8 @@
     --line: rgba(255, 255, 255, 0.18);
     --line-strong: rgba(255, 255, 255, 0.34);
     --accent: #f4f4f7;        /* big titles read bright white */
-    --red: #a51c30;           /* crimson - small labels / brackets accent */
+    --red: #a51c30;           /* crimson - kept only for tiny accents (back-to-top, "vibe coding") */
+    --glow: 0 0 6px rgba(255,255,255,0.5), 0 0 15px rgba(255,255,255,0.22), 0 2px 12px rgba(0,0,0,0.5);  /* mild white light-emission for labels */
     --ink: #0d0d0f;
     --panel: rgba(22, 22, 26, 0.42);          /* frosted dark glass panel */
     --glass: rgba(255, 255, 255, 0.10);       /* liquid-glass fill */
@@ -288,14 +289,14 @@
     font-family: var(--serif); font-style: italic; font-size: 2rem;
     color: var(--fg); text-decoration: none; transition: color .25s var(--ease);
   }
-  .mm-nav > a:active, .mm-head:active { color: var(--red); }
+  .mm-nav > a:active, .mm-head:active { color: var(--accent); }
   .mm-group { display: flex; flex-direction: column; align-items: center; gap: 0.55rem; }
   .mm-sub { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; margin-top: 0.1rem; }
   .mm-sub a {
     font-family: var(--mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em;
     color: var(--fg-dim); text-decoration: none;
   }
-  .mm-sub a:active { color: var(--red); }
+  .mm-sub a:active { color: var(--accent); }
   .mm-nav a.mm-cta {
     margin-top: 1.2rem; font-family: var(--mono); font-style: normal; font-size: 0.82rem;
     text-transform: uppercase; letter-spacing: 0.16em; color: #fff;
@@ -404,10 +405,10 @@
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.24em;
-    color: var(--red);
-    border-left: 2px solid var(--red);
+    color: #fff;
+    border-left: 2px solid rgba(255,255,255,0.85);
     padding-left: 0.85rem;
-    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+    text-shadow: var(--glow);
   }
 
   .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.8rem; }
@@ -630,7 +631,7 @@
   .to-top svg {
     width: 18px;
     height: 18px;
-    color: var(--fg);
+    color: var(--red);
     transition: transform 0.4s var(--ease-out);
   }
   .to-top:hover {
@@ -841,13 +842,6 @@
     margin-left: auto;
     margin-right: auto;
   }
-  .section-num {
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    color: var(--red);
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-  }
   .section-title {
     font-family: var(--serif);
     font-size: clamp(2.25rem, 5vw, 4rem);
@@ -892,22 +886,6 @@
     transition: opacity 0.55s var(--ease);
   }
   .about-portrait:hover::before { opacity: 1; }
-  .about-portrait::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(36, 27, 18, 0.62), transparent 52%);
-  }
-  .portrait-caption {
-    position: relative;
-    z-index: 2;
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: #ece6d6;
-  }
-  .portrait-caption span { color: #c9bfa6; margin-right: 0.5rem; }
 
   .about-prose p {
     font-size: 1.4rem;
@@ -970,7 +948,8 @@
     font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.22em;
-    color: var(--red);
+    color: #fff;
+    text-shadow: var(--glow);
   }
   .stat-heading {
     font-family: var(--serif);
@@ -1264,7 +1243,8 @@
     font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.22em;
-    color: var(--red);
+    color: #fff;
+    text-shadow: var(--glow);
     margin-bottom: 2rem;
   }
   .contact h2 {
@@ -1503,7 +1483,8 @@
     align-items: center;
     font-family: var(--mono);
     font-size: 0.72rem;
-    color: var(--red);
+    color: #fff;
+    text-shadow: var(--glow);
     text-transform: uppercase;
     letter-spacing: 0.14em;
   }
@@ -1744,7 +1725,6 @@
 <!-- =================== WORK =================== -->
 <section id="work">
   <div class="section-head">
-    <div class="section-num">[ 01 / Work ]</div>
     <h2 class="section-title">Selected <em>work</em>.</h2>
   </div>
 
@@ -1825,7 +1805,6 @@
 <!-- =================== SKILLS =================== -->
 <section id="skills">
   <div class="section-head">
-    <div class="section-num">[ 02 / Skills ]</div>
     <h2 class="section-title"><em>Skills</em>.</h2>
   </div>
 
@@ -1894,7 +1873,6 @@
 <!-- =================== EXPERIENCE =================== -->
 <section id="experience">
   <div class="section-head">
-    <div class="section-num">[ 03 / Experience ]</div>
     <h2 class="section-title">Recent &amp; relevant <em>experience</em>.</h2>
   </div>
 
@@ -1956,17 +1934,12 @@
 <!-- =================== ABOUT =================== -->
 <section id="about">
   <div class="section-head">
-    <div class="section-num">[ 04 / About ]</div>
     <h2 class="section-title">About <em>me</em>.</h2>
   </div>
 
   <div class="container">
     <div class="about-grid">
-      <div class="about-portrait reveal">
-        <div class="portrait-caption">
-          <span>fig. III</span> Erick Sabando - Arch &middot; Designer &middot; Drafter &middot; Visualization Artist
-        </div>
-      </div>
+      <div class="about-portrait reveal"></div>
 
       <div class="about-prose reveal">
         <p>
