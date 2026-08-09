@@ -634,9 +634,8 @@
   }
   .to-top::before { content: none; }
   .to-top svg {
-    width: 18px;
-    height: 18px;
-    color: var(--fg);
+    width: 22px;
+    height: 26px;
     transition: transform 0.4s var(--ease-out);
   }
   .to-top:hover {
@@ -1637,6 +1636,11 @@
     #work .work-col { flex: 1; gap: 2.5rem; }
     #work .project { grid-column: auto; }
   }
+
+  /* Old-world golden architect's compass cursor (hotspot = handle tip) */
+  html, body { cursor: url("data:image/svg+xml,%3Csvg width=%2236%22 height=%2236%22 xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 44 44%22%3E %3Cg transform=%22rotate(-45 12 10)%22%3E %3Cpath d=%22M 6.8 31 Q 12 35.5 17.2 31%22 fill=%22none%22 stroke=%22%23bf9026%22 stroke-width=%221.6%22/%3E %3Cpath d=%22M 11 10.5 L 5.2 38.5 L 7.4 39.2 L 12.6 12 Z%22 fill=%22%23d9b53c%22 stroke=%22%234a3a0d%22 stroke-width=%221.1%22 stroke-linejoin=%22round%22/%3E %3Cpath d=%22M 13 10.5 L 18.8 38.5 L 16.6 39.2 L 11.4 12 Z%22 fill=%22%23bf9026%22 stroke=%22%234a3a0d%22 stroke-width=%221.1%22 stroke-linejoin=%22round%22/%3E %3Cpath d=%22M 5.2 38.5 L 6 42.6 L 7.4 39.2 Z%22 fill=%22%234a3a0d%22/%3E %3Cpath d=%22M 18.8 38.5 L 18 42.6 L 16.6 39.2 Z%22 fill=%22%234a3a0d%22/%3E %3Ccircle cx=%2212%22 cy=%2210%22 r=%223.6%22 fill=%22%23e8c85a%22 stroke=%22%234a3a0d%22 stroke-width=%221.1%22/%3E %3Ccircle cx=%2212%22 cy=%2210%22 r=%221.3%22 fill=%22%234a3a0d%22/%3E %3Crect x=%2210.8%22 y=%223.4%22 width=%222.4%22 height=%224%22 rx=%221%22 fill=%22%23d9b53c%22 stroke=%22%234a3a0d%22 stroke-width=%220.9%22/%3E %3Ccircle cx=%2212%22 cy=%223.2%22 r=%221.4%22 fill=%22%23e8c85a%22 stroke=%22%234a3a0d%22 stroke-width=%220.9%22/%3E %3C/g%3E %3C/svg%3E") 6 4, auto; }
+  a, button, [data-lightbox], .card, .shot, .project, label, summary { cursor: url("data:image/svg+xml,%3Csvg width=%2236%22 height=%2236%22 xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 44 44%22%3E %3Cg transform=%22rotate(-45 12 10)%22%3E %3Cpath d=%22M 6.8 31 Q 12 35.5 17.2 31%22 fill=%22none%22 stroke=%22%23bf9026%22 stroke-width=%221.6%22/%3E %3Cpath d=%22M 11 10.5 L 5.2 38.5 L 7.4 39.2 L 12.6 12 Z%22 fill=%22%23d9b53c%22 stroke=%22%234a3a0d%22 stroke-width=%221.1%22 stroke-linejoin=%22round%22/%3E %3Cpath d=%22M 13 10.5 L 18.8 38.5 L 16.6 39.2 L 11.4 12 Z%22 fill=%22%23bf9026%22 stroke=%22%234a3a0d%22 stroke-width=%221.1%22 stroke-linejoin=%22round%22/%3E %3Cpath d=%22M 5.2 38.5 L 6 42.6 L 7.4 39.2 Z%22 fill=%22%234a3a0d%22/%3E %3Cpath d=%22M 18.8 38.5 L 18 42.6 L 16.6 39.2 Z%22 fill=%22%234a3a0d%22/%3E %3Ccircle cx=%2212%22 cy=%2210%22 r=%223.6%22 fill=%22%23e8c85a%22 stroke=%22%234a3a0d%22 stroke-width=%221.1%22/%3E %3Ccircle cx=%2212%22 cy=%2210%22 r=%221.3%22 fill=%22%234a3a0d%22/%3E %3Crect x=%2210.8%22 y=%223.4%22 width=%222.4%22 height=%224%22 rx=%221%22 fill=%22%23d9b53c%22 stroke=%22%234a3a0d%22 stroke-width=%220.9%22/%3E %3Ccircle cx=%2212%22 cy=%223.2%22 r=%221.4%22 fill=%22%23e8c85a%22 stroke=%22%234a3a0d%22 stroke-width=%220.9%22/%3E %3C/g%3E %3C/svg%3E") 6 4, pointer; }
+  input, textarea, select { cursor: auto; }
 </style>
 </head>
 <body>
@@ -2096,9 +2100,18 @@
 </footer>
 
 <a href="#top" class="to-top" id="toTop" aria-label="Back to top">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <line x1="12" y1="19" x2="12" y2="5"/>
-    <polyline points="6 11 12 5 18 11"/>
+  <!-- nautical-map north arrow -->
+  <svg viewBox="0 0 24 28" aria-hidden="true">
+    <text x="12" y="5.6" font-family="Georgia,'Times New Roman',serif" font-size="6.2" font-weight="bold" fill="#e8c85a" text-anchor="middle">N</text>
+    <g stroke="#3d2f0a" stroke-width="0.45" stroke-linejoin="round">
+      <path d="M12.6 16.4 L20.6 17 L12.6 17.6 Z" fill="#a9821f"/>
+      <path d="M11.4 16.4 L3.4 17 L11.4 17.6 Z" fill="#a9821f"/>
+      <path d="M11.3 17.5 L12 24.8 L12.7 17.5 Z" fill="#a9821f"/>
+      <path d="M12 7 L9.9 17 L12 17 Z" fill="#e8c85a"/>
+      <path d="M12 7 L14.1 17 L12 17 Z" fill="#8a6d1f"/>
+    </g>
+    <circle cx="12" cy="17" r="1.15" fill="#3d2f0a"/>
+    <circle cx="12" cy="17" r="0.5" fill="#e8c85a"/>
   </svg>
 </a>
 
