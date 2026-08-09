@@ -599,33 +599,24 @@
     transform-origin: left;
   }
 
-  /* Glass bubble aesthetic matching the other interactive elements. */
+  /* Bare nautical north arrow - no chip behind it */
   .to-top {
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    bottom: 1.8rem;
+    right: 1.8rem;
     z-index: 90;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: var(--fg);
-    background: var(--bg);
-    border: 1px solid var(--line-strong);
-    box-shadow: inset 0 0 0 3px var(--bg), inset 0 0 0 4px var(--line), 0 10px 24px -12px rgba(43, 33, 24, 0.55);
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
     /* Hidden by default - JS toggles .visible once you scroll past the hero */
     opacity: 0;
     transform: translateY(16px);
     pointer-events: none;
     transition:
       opacity 0.5s var(--ease),
-      transform 0.5s var(--ease-out),
-      background 0.4s var(--ease),
-      border-color 0.4s var(--ease),
-      box-shadow 0.4s var(--ease);
+      transform 0.5s var(--ease-out);
   }
   .to-top.visible {
     opacity: 1;
@@ -634,16 +625,11 @@
   }
   .to-top::before { content: none; }
   .to-top svg {
-    width: 22px;
-    height: 26px;
+    width: 40px;
+    height: 47px;
     transition: transform 0.4s var(--ease-out);
   }
-  .to-top:hover {
-    background: rgba(138, 58, 38, 0.08);
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  .to-top:hover svg { transform: translateY(-3px); }
+  .to-top:hover svg { transform: translateY(-4px); }
 
   /* ============ DOCUMENT MODAL ============ */
   .doc-modal {
@@ -1637,9 +1623,9 @@
     #work .project { grid-column: auto; }
   }
 
-  /* Old-world golden architect's compass cursor (hotspot = handle tip) */
-  html, body { cursor: url("data:image/svg+xml,%3Csvg width=%2236%22 height=%2236%22 xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 44 44%22%3E %3Cg transform=%22rotate(-45 12 10)%22%3E %3Cpath d=%22M 6.8 31 Q 12 35.5 17.2 31%22 fill=%22none%22 stroke=%22%23bf9026%22 stroke-width=%221.6%22/%3E %3Cpath d=%22M 11 10.5 L 5.2 38.5 L 7.4 39.2 L 12.6 12 Z%22 fill=%22%23d9b53c%22 stroke=%22%234a3a0d%22 stroke-width=%221.1%22 stroke-linejoin=%22round%22/%3E %3Cpath d=%22M 13 10.5 L 18.8 38.5 L 16.6 39.2 L 11.4 12 Z%22 fill=%22%23bf9026%22 stroke=%22%234a3a0d%22 stroke-width=%221.1%22 stroke-linejoin=%22round%22/%3E %3Cpath d=%22M 5.2 38.5 L 6 42.6 L 7.4 39.2 Z%22 fill=%22%234a3a0d%22/%3E %3Cpath d=%22M 18.8 38.5 L 18 42.6 L 16.6 39.2 Z%22 fill=%22%234a3a0d%22/%3E %3Ccircle cx=%2212%22 cy=%2210%22 r=%223.6%22 fill=%22%23e8c85a%22 stroke=%22%234a3a0d%22 stroke-width=%221.1%22/%3E %3Ccircle cx=%2212%22 cy=%2210%22 r=%221.3%22 fill=%22%234a3a0d%22/%3E %3Crect x=%2210.8%22 y=%223.4%22 width=%222.4%22 height=%224%22 rx=%221%22 fill=%22%23d9b53c%22 stroke=%22%234a3a0d%22 stroke-width=%220.9%22/%3E %3Ccircle cx=%2212%22 cy=%223.2%22 r=%221.4%22 fill=%22%23e8c85a%22 stroke=%22%234a3a0d%22 stroke-width=%220.9%22/%3E %3C/g%3E %3C/svg%3E") 6 4, auto; }
-  a, button, [data-lightbox], .card, .shot, .project, label, summary { cursor: url("data:image/svg+xml,%3Csvg width=%2236%22 height=%2236%22 xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 44 44%22%3E %3Cg transform=%22rotate(-45 12 10)%22%3E %3Cpath d=%22M 6.8 31 Q 12 35.5 17.2 31%22 fill=%22none%22 stroke=%22%23bf9026%22 stroke-width=%221.6%22/%3E %3Cpath d=%22M 11 10.5 L 5.2 38.5 L 7.4 39.2 L 12.6 12 Z%22 fill=%22%23d9b53c%22 stroke=%22%234a3a0d%22 stroke-width=%221.1%22 stroke-linejoin=%22round%22/%3E %3Cpath d=%22M 13 10.5 L 18.8 38.5 L 16.6 39.2 L 11.4 12 Z%22 fill=%22%23bf9026%22 stroke=%22%234a3a0d%22 stroke-width=%221.1%22 stroke-linejoin=%22round%22/%3E %3Cpath d=%22M 5.2 38.5 L 6 42.6 L 7.4 39.2 Z%22 fill=%22%234a3a0d%22/%3E %3Cpath d=%22M 18.8 38.5 L 18 42.6 L 16.6 39.2 Z%22 fill=%22%234a3a0d%22/%3E %3Ccircle cx=%2212%22 cy=%2210%22 r=%223.6%22 fill=%22%23e8c85a%22 stroke=%22%234a3a0d%22 stroke-width=%221.1%22/%3E %3Ccircle cx=%2212%22 cy=%2210%22 r=%221.3%22 fill=%22%234a3a0d%22/%3E %3Crect x=%2210.8%22 y=%223.4%22 width=%222.4%22 height=%224%22 rx=%221%22 fill=%22%23d9b53c%22 stroke=%22%234a3a0d%22 stroke-width=%220.9%22/%3E %3Ccircle cx=%2212%22 cy=%223.2%22 r=%221.4%22 fill=%22%23e8c85a%22 stroke=%22%234a3a0d%22 stroke-width=%220.9%22/%3E %3C/g%3E %3C/svg%3E") 6 4, pointer; }
+  /* Black architect's compass cursor (thin white halo for dark areas; hotspot = handle tip) */
+  html, body { cursor: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 44 44%22%3E %3Cdefs%3E %3Cg id=%22c%22%3E %3Cpath d=%22M 7.6 30.5 Q 12 34.2 16.4 30.5%22 fill=%22none%22 stroke-width=%220.9%22/%3E %3Cpath d=%22M 11.35 10.8 L 5.9 40.6 L 6.9 40.9 L 12.35 11.6 Z%22/%3E %3Cpath d=%22M 12.65 10.8 L 18.1 40.6 L 17.1 40.9 L 11.65 11.6 Z%22/%3E %3Ccircle cx=%2212%22 cy=%229.6%22 r=%222.5%22/%3E %3Crect x=%2211.25%22 y=%223.6%22 width=%221.5%22 height=%223.6%22 rx=%220.7%22/%3E %3Ccircle cx=%2212%22 cy=%223.4%22 r=%221.1%22/%3E %3C/g%3E %3C/defs%3E %3Cg transform=%22rotate(-45 12 10)%22%3E %3Cuse href=%22%23c%22 fill=%22%23fff%22 stroke=%22%23fff%22 stroke-width=%222.6%22 stroke-linejoin=%22round%22/%3E %3Cuse href=%22%23c%22 fill=%22%230d0d0f%22 stroke=%22%230d0d0f%22 stroke-width=%220.4%22/%3E %3Ccircle cx=%2212%22 cy=%229.6%22 r=%220.8%22 fill=%22%23fff%22 transform=%22rotate(-45 12 10)%22/%3E %3C/g%3E %3C/svg%3E") 6 4, auto; }
+  a, button, [data-lightbox], .card, .shot, .project, label, summary { cursor: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 44 44%22%3E %3Cdefs%3E %3Cg id=%22c%22%3E %3Cpath d=%22M 7.6 30.5 Q 12 34.2 16.4 30.5%22 fill=%22none%22 stroke-width=%220.9%22/%3E %3Cpath d=%22M 11.35 10.8 L 5.9 40.6 L 6.9 40.9 L 12.35 11.6 Z%22/%3E %3Cpath d=%22M 12.65 10.8 L 18.1 40.6 L 17.1 40.9 L 11.65 11.6 Z%22/%3E %3Ccircle cx=%2212%22 cy=%229.6%22 r=%222.5%22/%3E %3Crect x=%2211.25%22 y=%223.6%22 width=%221.5%22 height=%223.6%22 rx=%220.7%22/%3E %3Ccircle cx=%2212%22 cy=%223.4%22 r=%221.1%22/%3E %3C/g%3E %3C/defs%3E %3Cg transform=%22rotate(-45 12 10)%22%3E %3Cuse href=%22%23c%22 fill=%22%23fff%22 stroke=%22%23fff%22 stroke-width=%222.6%22 stroke-linejoin=%22round%22/%3E %3Cuse href=%22%23c%22 fill=%22%230d0d0f%22 stroke=%22%230d0d0f%22 stroke-width=%220.4%22/%3E %3Ccircle cx=%2212%22 cy=%229.6%22 r=%220.8%22 fill=%22%23fff%22 transform=%22rotate(-45 12 10)%22/%3E %3C/g%3E %3C/svg%3E") 6 4, pointer; }
   input, textarea, select { cursor: auto; }
 </style>
 </head>
@@ -2102,16 +2088,21 @@
 <a href="#top" class="to-top" id="toTop" aria-label="Back to top">
   <!-- nautical-map north arrow -->
   <svg viewBox="0 0 24 28" aria-hidden="true">
-    <text x="12" y="5.6" font-family="Georgia,'Times New Roman',serif" font-size="6.2" font-weight="bold" fill="#e8c85a" text-anchor="middle">N</text>
-    <g stroke="#3d2f0a" stroke-width="0.45" stroke-linejoin="round">
-      <path d="M12.6 16.4 L20.6 17 L12.6 17.6 Z" fill="#a9821f"/>
-      <path d="M11.4 16.4 L3.4 17 L11.4 17.6 Z" fill="#a9821f"/>
-      <path d="M11.3 17.5 L12 24.8 L12.7 17.5 Z" fill="#a9821f"/>
-      <path d="M12 7 L9.9 17 L12 17 Z" fill="#e8c85a"/>
-      <path d="M12 7 L14.1 17 L12 17 Z" fill="#8a6d1f"/>
-    </g>
-    <circle cx="12" cy="17" r="1.15" fill="#3d2f0a"/>
-    <circle cx="12" cy="17" r="0.5" fill="#e8c85a"/>
+    <defs>
+      <g id="northRose">
+        <path d="M12.7 16.3 L21 17 L12.7 17.7 Z"/>
+        <path d="M11.3 16.3 L3 17 L11.3 17.7 Z"/>
+        <path d="M11.2 17.4 L12 25.6 L12.8 17.4 Z"/>
+        <path d="M12 6.2 L14.3 17 L12 17 Z"/>
+      </g>
+    </defs>
+    <use href="#northRose" fill="#fff" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/>
+    <text x="12" y="5.4" font-family="Georgia,'Times New Roman',serif" font-size="6.4" font-weight="bold" text-anchor="middle" fill="#fff" stroke="#fff" stroke-width="1.5">N</text>
+    <use href="#northRose" fill="#0d0d0f"/>
+    <path d="M12 6.2 L9.7 17 L12 17 Z" fill="#fff" stroke="#0d0d0f" stroke-width="0.55" stroke-linejoin="round"/>
+    <text x="12" y="5.4" font-family="Georgia,'Times New Roman',serif" font-size="6.4" font-weight="bold" text-anchor="middle" fill="#0d0d0f">N</text>
+    <circle cx="12" cy="17" r="1.05" fill="#0d0d0f"/>
+    <circle cx="12" cy="17" r="0.45" fill="#fff"/>
   </svg>
 </a>
 
