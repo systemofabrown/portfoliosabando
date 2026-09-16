@@ -90,7 +90,7 @@
 </head>
 <body>
   <header>
-    <a class="back" href="../portfolio.html" onclick="try{var r=new URL(document.referrer);if(r.origin===location.origin&&(r.pathname==='/'||r.pathname.indexOf('portfolio.html')>-1)){history.back();return false;}}catch(e){}">&larr; Back to portfolio</a>
+    <a class="back" href="../portfolio.html">&larr; Back to portfolio</a>
     <span class="brand">Erick Sabando &middot; Arch &middot; Designer &middot; Drafter &middot; Visualization Artist</span>
   </header>
   <main>
@@ -120,5 +120,25 @@
     </div>
   </main>
   <footer>&copy; 2025 - Erick Sabando</footer>
+<script>
+/* "Back to portfolio": use history.back() only when we came from the main page
+   (restores its scroll position); otherwise follow the plain href. Kept out of
+   an inline onclick because Netlify's Pretty URLs post-processing mangles
+   quotes inside rewritten attributes. */
+(function () {
+  var b = document.querySelector('a.back');
+  if (!b) return;
+  b.addEventListener('click', function (e) {
+    try {
+      var r = new URL(document.referrer);
+      if (r.origin === location.origin &&
+          (r.pathname === '/' || r.pathname.indexOf('portfolio') > -1)) {
+        e.preventDefault();
+        history.back();
+      }
+    } catch (_) {}
+  });
+})();
+</script>
 </body>
 </html>
