@@ -77,7 +77,7 @@
 </head>
 <body>
   <header>
-    <a class="back" href="../portfolio.html" onclick="if(history.length>1){history.back();return false;}">&larr; Back to portfolio</a>
+    <a class="back" href="../portfolio.html" onclick="try{var r=new URL(document.referrer);if(r.origin===location.origin&&(r.pathname==='/'||r.pathname.indexOf('portfolio.html')>-1)){history.back();return false;}}catch(e){}">&larr; Back to portfolio</a>
     <span class="brand">Erick Sabando &middot; Arch &middot; Designer &middot; Drafter &middot; Visualization Artist</span>
   </header>
   <main>
