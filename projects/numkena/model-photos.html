@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Model | Yavapai-Apache Cultural Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Marcellus+SC&display=swap">
+<style>
+/* Photographs of the physical model, on the same torch-lit stone as the landing wall. Click a photo to see it full screen. */
+:root {
+  color-scheme: dark;
+  --ground: #0a0706;
+  --panel: #120d0b;            /* solid, so the petroglyph outlines can hide what is behind them */
+  --bone: #eadfce;
+  --bone-dim: rgba(234, 223, 206, 0.62);
+  --bone-faint: rgba(234, 223, 206, 0.16);
+  --ember: #f3c48c;
+  --ember-soft: rgba(243, 196, 140, 0.28);
+  --line: rgba(243, 196, 140, 0.32);
+  --carve: "Marcellus SC", "Trajan Pro", "Optima", Georgia, serif;
+  --text: "Marcellus", "Optima", Georgia, serif;
+  --tx: 50vw; --ty: 40vh; --tr: 1;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--ground); color: var(--bone); font-family: var(--text); font-size: clamp(16px, 1.05vw, 18px); line-height: 1.7; overflow-x: hidden; overflow-x: clip; -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
+a { color: inherit; }
+img { display: block; max-width: 100%; height: auto; }
+
+/* the wall: one repeat of the landing stone, unlit, with a torch pool that follows the pointer */
+#stone, #shade, #embers { position: fixed; inset: 0; pointer-events: none; }
+#stone { background: #2a1d18 url(media/story/stone.webp) repeat; background-size: 420px auto; filter: saturate(0.9); }
+#shade {
+  background:
+    radial-gradient(circle calc(34vmax * var(--tr)) at var(--tx) var(--ty), rgba(255, 170, 90, 0.2), rgba(255, 170, 90, 0) 70%),
+    radial-gradient(circle calc(62vmax * var(--tr)) at var(--tx) var(--ty), rgba(10, 7, 6, 0.3), rgba(10, 7, 6, 0.62) 26%, rgba(10, 7, 6, 0.86) 62%, rgba(10, 7, 6, 0.93) 100%),
+    radial-gradient(ellipse 120% 90% at 50% 45%, rgba(10, 7, 6, 0) 55%, rgba(5, 3, 2, 0.6) 100%);
+}
+#embers { width: 100%; height: 100%; }
+
+/* header: the way back to the wall and on to the walkthrough */
+#top {
+  position: fixed; z-index: 4; left: calc(16px + env(safe-area-inset-left, 0px)); top: calc(16px + env(safe-area-inset-top, 0px));
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.btn {
+  font-family: var(--carve); font-size: clamp(10px, 0.8vw, 12px); letter-spacing: 0.32em; text-transform: uppercase; text-decoration: none; color: var(--ember);
+  display: inline-block; background: rgba(10, 7, 6, 0.62); border: 1px solid var(--line); padding: 11px 14px 10px 17px; cursor: pointer;
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+}
+.btn:hover, .btn:focus-visible { border-color: var(--ember); color: #ffe2bd; outline: none; }
+.btn.ghost { color: var(--bone-dim); border-color: rgba(234, 223, 206, 0.18); }
+.btn.ghost:hover, .btn.ghost:focus-visible { color: var(--bone); border-color: rgba(234, 223, 206, 0.55); }
+#brand {
+  position: fixed; z-index: 3; right: calc(18px + env(safe-area-inset-right, 0px)); top: calc(20px + env(safe-area-inset-top, 0px)); text-align: right;
+  font-family: var(--carve); font-size: clamp(9px, 0.75vw, 12px); letter-spacing: 0.34em; color: var(--bone-dim); line-height: 1.9; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  transition: opacity 0.4s ease;
+}
+#brand b { display: block; font-weight: 400; color: var(--bone); font-size: 1.15em; }
+
+/* the reading column, a darker band down the stone */
+main { position: relative; z-index: 1; width: min(1120px, 100%); margin: 0 auto; padding: 0 clamp(16px, 4vw, 56px); }
+main::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, rgba(10, 7, 6, 0), rgba(10, 7, 6, 0.42) 9%, rgba(10, 7, 6, 0.42) 91%, rgba(10, 7, 6, 0)); }
+
+.kicker { display: flex; align-items: baseline; gap: 14px; margin: 0 0 10px; font-family: var(--carve); font-size: clamp(11px, 0.9vw, 13px); letter-spacing: 0.42em; text-transform: uppercase; color: var(--bone-dim); }
+.kicker b { font-weight: 400; color: var(--ember); letter-spacing: 0.3em; }
+h1, h2, h3 { font-family: var(--carve); font-weight: 400; margin: 0; }
+h2 { font-size: clamp(30px, 3.6vw, 52px); line-height: 1.12; letter-spacing: 0.08em; color: var(--bone); text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6); }
+h3 { font-size: clamp(13px, 1vw, 15px); letter-spacing: 0.3em; text-transform: uppercase; color: var(--ember); line-height: 1.5; }
+p { margin: 0 0 1em; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55); }
+.lede { font-size: clamp(18px, 1.35vw, 22px); line-height: 1.6; color: var(--bone); max-width: 40em; }
+.dim { color: var(--bone-dim); }
+.rule { width: 64px; height: 1px; background: var(--ember); opacity: 0.7; margin: 22px 0 26px; border: 0; }
+
+/* end */
+.end { padding: clamp(72px, 10vw, 140px) 0 calc(56px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--bone-faint); text-align: center; }
+.end h2 { font-size: clamp(24px, 2.6vw, 38px); }
+.end .go { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 28px 0 0; }
+.credits { margin: clamp(60px, 8vw, 110px) auto 0; font-family: var(--carve); text-transform: uppercase; color: var(--bone-dim); }
+.credits .c1 { font-size: 12px; letter-spacing: 0.5em; color: var(--ember); }
+.credits .c2 { margin-top: 12px; font-size: clamp(12px, 1vw, 14px); letter-spacing: 0.3em; line-height: 2.1; color: var(--bone); }
+.credits img { width: 150px; margin: 34px auto 0; opacity: 0.55; }
+
+/* chapters rise in as they arrive */
+.rise { opacity: 0; transform: translateY(22px); transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.rise.in { opacity: 1; transform: none; }
+.calm .rise { opacity: 1; transform: none; transition: none; }
+.calm .scrollcue svg { animation: none; }
+
+/* ---------- the photo page ---------- */
+.head { padding: clamp(110px, 14vh, 150px) 0 clamp(26px, 4vw, 44px); }
+.head .over { font-family: var(--carve); font-size: clamp(11px, 0.9vw, 13px); letter-spacing: 0.48em; text-transform: uppercase; color: var(--ember); margin: 0 0 16px; }
+.head h1 { font-size: clamp(44px, 7vw, 104px); line-height: 0.98; letter-spacing: 0.1em; color: var(--bone); text-shadow: 0 4px 30px rgba(0, 0, 0, 0.65); margin-left: -0.05em; }
+.head .sub { margin: 16px 0 0; font-family: var(--carve); font-size: clamp(13px, 1.25vw, 18px); letter-spacing: 0.24em; text-transform: uppercase; color: var(--bone-dim); line-height: 1.6; }
+
+/* each photo is a print on the stone: a thin ember frame, a deep shadow, a carved caption; select it to enlarge */
+.photos { padding-bottom: clamp(20px, 4vw, 50px); }
+.photo { margin: 0 0 clamp(28px, 3vw, 40px); break-inside: avoid; }
+.photo.lead { margin-bottom: clamp(44px, 5vw, 68px); }
+/* the rest of the photos: columns like a contact sheet, each print at its own shape (portrait or landscape) */
+.wall { column-count: 2; column-gap: clamp(20px, 2.6vw, 34px); }
+.photo button { display: block; width: 100%; padding: 0; border: 1px solid var(--line); background: #f4f1ec; cursor: zoom-in; position: relative; overflow: hidden;
+  box-shadow: 0 0 0 8px rgba(10, 7, 6, 0.45), 0 34px 80px rgba(0, 0, 0, 0.6); transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+.photo button img { width: 100%; height: auto; transition: transform 0.9s ease; }
+.photo button:hover, .photo button:focus-visible { border-color: var(--ember); outline: none; box-shadow: 0 0 0 8px rgba(243, 196, 140, 0.12), 0 34px 80px rgba(0, 0, 0, 0.6); }
+.photo button:hover img, .photo button:focus-visible img { transform: scale(1.02); }
+.photo button::after { content: ""; position: absolute; right: 10px; bottom: 10px; width: 26px; height: 26px; opacity: 0; transition: opacity 0.3s ease;
+  background: rgba(10, 7, 6, 0.72) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23f3c48c' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M7 1.5h3.5V5M5 10.5H1.5V7M10.5 1.5 7 5M1.5 10.5 5 7'/%3E%3C/svg%3E") center / 12px no-repeat; border: 1px solid rgba(243, 196, 140, 0.4); }
+.photo button:hover::after, .photo button:focus-visible::after { opacity: 1; }
+.photo figcaption { display: flex; gap: 14px; align-items: baseline; margin-top: 16px; font-family: var(--carve); font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--bone-dim); line-height: 1.6; }
+.photo figcaption b { font-weight: 400; color: var(--ember); letter-spacing: 0.24em; }
+
+/* full screen */
+#lightbox { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; background: rgba(6, 4, 3, 0.95); opacity: 0; transition: opacity 0.25s ease; touch-action: pan-y; }
+#lightbox.on { opacity: 1; }
+#lightbox figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+#lbImg { display: block; max-width: calc(100vw - 168px); max-height: calc(100vh - 150px); width: auto; height: auto; border: 1px solid var(--line); background: #f4f1ec; box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65); cursor: zoom-out; }
+#lbCap { max-width: calc(100vw - 32px); padding: 0 8px; font-family: var(--carve); font-size: clamp(10px, 0.85vw, 12px); letter-spacing: 0.32em; text-transform: uppercase; color: var(--bone); text-align: center; line-height: 1.7; }
+#lbCap span { margin-left: 14px; color: var(--bone-dim); letter-spacing: 0.2em; }
+.lbBtn { position: absolute; font-family: var(--carve); font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--bone-dim); background: rgba(10, 7, 6, 0.62); border: 1px solid rgba(234, 223, 206, 0.18); padding: 11px 14px 10px 17px; cursor: pointer; }
+.lbBtn:hover, .lbBtn:focus-visible { color: var(--bone); border-color: rgba(234, 223, 206, 0.55); outline: none; }
+#lbClose { top: calc(16px + env(safe-area-inset-top, 0px)); right: calc(16px + env(safe-area-inset-right, 0px)); }
+#lbPrev, #lbNext { top: 50%; transform: translateY(-50%); width: 46px; height: 46px; padding: 0; display: grid; place-items: center; }
+#lbPrev { left: calc(16px + env(safe-area-inset-left, 0px)); }
+#lbNext { right: calc(16px + env(safe-area-inset-right, 0px)); }
+.lbBtn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+@media (min-width: 1100px) { .wall { column-count: 3; } }
+@media (max-width: 760px) { #brand { display: none; } }
+@media (max-width: 560px) {
+  #top { gap: 6px; }
+  #top .btn { padding: 9px 8px 8px 10px; letter-spacing: 0.14em; font-size: 10px; }
+  #top .long { display: none; }
+  .head { padding-top: 92px; }
+  .wall { column-count: 1; }
+  .photo button { box-shadow: 0 0 0 5px rgba(10, 7, 6, 0.45), 0 20px 50px rgba(0, 0, 0, 0.6); }
+  .end .go .btn { width: 100%; }
+  #lbImg { max-width: calc(100vw - 24px); max-height: calc(100vh - 170px); }
+  #lbCap { letter-spacing: 0.2em; }
+  #lbCap span { display: block; margin: 4px 0 0; }
+  #lbPrev, #lbNext { top: auto; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: none; }
+}
+</style>
+</head>
+<body>
+<div id="stone" aria-hidden="true"></div>
+<div id="shade" aria-hidden="true"></div>
+<canvas id="embers" aria-hidden="true"></canvas>
+
+<nav id="top" aria-label="Presentation">
+  <a class="btn ghost" href="index.html"><span class="long">The </span>wall</a>
+  <a class="btn ghost" href="walkthrough.html#film">Film</a>
+  <a class="btn ghost" href="walkthrough.html#presentation">Presentation</a>
+  <a class="btn ghost" href="story.html"><span class="long">The </span>story</a>
+</nav>
+<div id="brand" aria-hidden="true"><b>Yavapai-Apache Cultural Center</b>The Model</div>
+
+<main>
+  <header class="head rise">
+    <p class="over">ARC 401 &middot; Studio Eagle Bull</p>
+    <h1>The Model</h1>
+    <p class="sub">Photographs of the physical model</p>
+  </header>
+
+  <section class="photos" aria-label="Photographs of the model">
+    <figure class="photo lead rise">
+      <button type="button" data-full="media/model/model-01.webp" data-cap="The model and its site" aria-label="Enlarge photo: The model and its site"><img src="media/model/model-01.webp" width="2100" height="1400" alt="The model and its site"></button>
+      <figcaption><b>01</b>The model and its site</figcaption>
+    </figure>
+    <div class="wall">
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-02.webp" data-cap="The display box, with the studio logo and Numkena&#x27;s words on the front" aria-label="Enlarge photo: The display box, with the studio logo and Numkena&#x27;s words on the front"><img src="media/model/model-02_t.webp" width="560" height="373" alt="The display box, with the studio logo and Numkena&#x27;s words on the front" loading="lazy"></button>
+      <figcaption><b>02</b>The display box, with the studio logo and Numkena&#x27;s words on the front</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-03.webp" data-cap="Under red light, the carpet facade glows behind the tower" aria-label="Enlarge photo: Under red light, the carpet facade glows behind the tower"><img src="media/model/model-03_t.webp" width="560" height="840" alt="Under red light, the carpet facade glows behind the tower" loading="lazy"></button>
+      <figcaption><b>03</b>Under red light, the carpet facade glows behind the tower</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-04.webp" data-cap="The carpet facade rising behind the model" aria-label="Enlarge photo: The carpet facade rising behind the model"><img src="media/model/model-04_t.webp" width="560" height="840" alt="The carpet facade rising behind the model" loading="lazy"></button>
+      <figcaption><b>04</b>The carpet facade rising behind the model</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-05.webp" data-cap="A portrait and a shared memory engraved on the side of the box" aria-label="Enlarge photo: A portrait and a shared memory engraved on the side of the box"><img src="media/model/model-05_t.webp" width="560" height="373" alt="A portrait and a shared memory engraved on the side of the box" loading="lazy"></button>
+      <figcaption><b>05</b>A portrait and a shared memory engraved on the side of the box</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-06.webp" data-cap="The engraved side, with the building and the facade beyond" aria-label="Enlarge photo: The engraved side, with the building and the facade beyond"><img src="media/model/model-06_t.webp" width="560" height="840" alt="The engraved side, with the building and the facade beyond" loading="lazy"></button>
+      <figcaption><b>06</b>The engraved side, with the building and the facade beyond</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-07.webp" data-cap="The building against the carpet facade" aria-label="Enlarge photo: The building against the carpet facade"><img src="media/model/model-07_t.webp" width="560" height="373" alt="The building against the carpet facade" loading="lazy"></button>
+      <figcaption><b>07</b>The building against the carpet facade</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-08.webp" data-cap="The tower above the ramada and the entry" aria-label="Enlarge photo: The tower above the ramada and the entry"><img src="media/model/model-08_t.webp" width="560" height="840" alt="The tower above the ramada and the entry" loading="lazy"></button>
+      <figcaption><b>08</b>The tower above the ramada and the entry</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-09.webp" data-cap="The whole site from above" aria-label="Enlarge photo: The whole site from above"><img src="media/model/model-09_t.webp" width="560" height="373" alt="The whole site from above" loading="lazy"></button>
+      <figcaption><b>09</b>The whole site from above</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-10.webp" data-cap="Looking down on the tower and the roofs" aria-label="Enlarge photo: Looking down on the tower and the roofs"><img src="media/model/model-10_t.webp" width="560" height="840" alt="Looking down on the tower and the roofs" loading="lazy"></button>
+      <figcaption><b>10</b>Looking down on the tower and the roofs</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-11.webp" data-cap="The ramada and the path to the gateway" aria-label="Enlarge photo: The ramada and the path to the gateway"><img src="media/model/model-11_t.webp" width="560" height="840" alt="The ramada and the path to the gateway" loading="lazy"></button>
+      <figcaption><b>11</b>The ramada and the path to the gateway</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-12.webp" data-cap="The ramada roofs from above" aria-label="Enlarge photo: The ramada roofs from above"><img src="media/model/model-12_t.webp" width="560" height="840" alt="The ramada roofs from above" loading="lazy"></button>
+      <figcaption><b>12</b>The ramada roofs from above</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-13.webp" data-cap="The tower and the main entry from above" aria-label="Enlarge photo: The tower and the main entry from above"><img src="media/model/model-13_t.webp" width="560" height="747" alt="The tower and the main entry from above" loading="lazy"></button>
+      <figcaption><b>13</b>The tower and the main entry from above</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-14.webp" data-cap="The model on the studio table" aria-label="Enlarge photo: The model on the studio table"><img src="media/model/model-14_t.webp" width="560" height="747" alt="The model on the studio table" loading="lazy"></button>
+      <figcaption><b>14</b>The model on the studio table</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-15.webp" data-cap="The section cut, open to the lobby and its stair" aria-label="Enlarge photo: The section cut, open to the lobby and its stair"><img src="media/model/model-15_t.webp" width="560" height="420" alt="The section cut, open to the lobby and its stair" loading="lazy"></button>
+      <figcaption><b>15</b>The section cut, open to the lobby and its stair</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-16.webp" data-cap="Figures on the path under the ramada" aria-label="Enlarge photo: Figures on the path under the ramada"><img src="media/model/model-16_t.webp" width="560" height="420" alt="Figures on the path under the ramada" loading="lazy"></button>
+      <figcaption><b>16</b>Figures on the path under the ramada</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-17.webp" data-cap="The entry tunnel at ground level" aria-label="Enlarge photo: The entry tunnel at ground level"><img src="media/model/model-17_t.webp" width="560" height="420" alt="The entry tunnel at ground level" loading="lazy"></button>
+      <figcaption><b>17</b>The entry tunnel at ground level</figcaption>
+    </figure>
+    <figure class="photo rise">
+      <button type="button" data-full="media/model/model-18.webp" data-cap="The entry and the tower from the lawn" aria-label="Enlarge photo: The entry and the tower from the lawn"><img src="media/model/model-18_t.webp" width="560" height="747" alt="The entry and the tower from the lawn" loading="lazy"></button>
+      <figcaption><b>18</b>The entry and the tower from the lawn</figcaption>
+    </figure>
+    </div>
+  </section>
+
+  <section class="end" aria-labelledby="h-end">
+    <h2 id="h-end">See It for Yourself</h2>
+    <div class="go">
+      <a class="btn" href="walkthrough.html#film">Watch the film</a>
+      <a class="btn" href="walkthrough.html#model">Explore the 3D model</a>
+      <a class="btn ghost" href="index.html">Back to the wall</a>
+    </div>
+    <div class="credits">
+      <div class="c1">ARC 401 &middot; Studio Eagle Bull</div>
+      <div class="c2">Liselle L&oacute;pez &middot; Nick Zalle &middot; Adelyn Bledsoe-Hartshorn &middot; Nolan Hegnes &middot; Erick Sabando</div>
+      <img src="media/story/logo.png" width="420" height="225" alt="Lopez + Associates">
+    </div>
+  </section>
+</main>
+
+<div id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lbCap" hidden>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button id="lbPrev" class="lbBtn" type="button" aria-label="Previous photo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10.5 2.5 5 8l5.5 5.5"/></svg></button>
+  <button id="lbNext" class="lbBtn" type="button" aria-label="Next photo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 2.5 11 8l-5.5 5.5"/></svg></button>
+  <button id="lbClose" class="lbBtn" type="button">Close</button>
+</div>
+
+<script>
+
+(() => {
+  const calm = location.hash === "#calm";
+  if (calm) document.documentElement.classList.add("calm");
+  const root = document.documentElement.style;
+
+  // ---- the torch: a warm pool on the stone that follows the pointer and breathes like a flame
+  const finePointer = matchMedia("(pointer: fine)").matches;
+  let W = innerWidth, H = innerHeight;
+  let tx = W * 0.5, ty = H * 0.38, gx = tx, gy = ty, moved = false;
+  addEventListener("resize", () => { W = innerWidth; H = innerHeight; size(); });
+  addEventListener("pointermove", (e) => { if (e.pointerType === "mouse" || e.pointerType === "pen") { gx = e.clientX; gy = e.clientY; moved = true; } }, { passive: true });
+  document.addEventListener("pointerleave", () => { moved = false; });
+  // value noise for the flicker
+  const R = (n) => { const s = Math.sin(n * 127.1) * 43758.5453; return s - Math.floor(s); };
+  const vn = (t) => { const i = Math.floor(t), f = t - i, u = f * f * (3 - 2 * f); return R(i) * (1 - u) + R(i + 1) * u; };
+  let flare = 0, nextFlare = 2;
+
+  // ---- embers rising from the torch
+  const cv = document.getElementById("embers"), cx = cv.getContext("2d");
+  let dpr = 1;
+  function size() { dpr = Math.min(2, devicePixelRatio || 1); cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+  size();
+  const sprite = (() => { const c = document.createElement("canvas"); c.width = c.height = 32; const x = c.getContext("2d"), g = x.createRadialGradient(16, 16, 0, 16, 16, 16);
+    g.addColorStop(0, "rgba(255,226,170,1)"); g.addColorStop(0.25, "rgba(255,160,70,0.75)"); g.addColorStop(1, "rgba(255,110,30,0)"); x.fillStyle = g; x.fillRect(0, 0, 32, 32); return c; })();
+  const E = [];
+  function spawn() { E.push({ x: tx + (Math.random() - 0.5) * 40, y: ty + 10 + Math.random() * 20, vx: (Math.random() - 0.5) * 14, vy: -(22 + Math.random() * 38), life: 0, max: 2.2 + Math.random() * 2.6, s: 1.2 + Math.random() * 2.2, ph: Math.random() * 6.28 }); }
+
+  let last = performance.now(), acc = 0;
+  function frame(now) {
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    const t = now / 1000;
+    if (!moved || !finePointer) { gx = W * (0.5 + 0.06 * Math.sin(t * 0.13)); gy = H * (0.36 + 0.03 * Math.sin(t * 0.21 + 1)); }
+    const k = 1 - Math.exp(-dt / (moved ? 0.09 : 0.6));
+    tx += (gx - tx) * k; ty += (gy - ty) * k;
+    let fl = 1;
+    if (!calm) {
+      if (t > nextFlare) { flare = 0.12 + Math.random() * 0.1; nextFlare = t + 1.5 + Math.random() * 3; }
+      flare *= Math.exp(-dt / 0.4);
+      fl = 1 + 0.05 * (vn(t * 0.35) - 0.5) + 0.07 * (vn(t * 4.3) - 0.5) + 0.04 * (vn(t * 9.1 + 7) - 0.5) + flare;
+    }
+    root.setProperty("--tx", tx.toFixed(1) + "px"); root.setProperty("--ty", ty.toFixed(1) + "px"); root.setProperty("--tr", fl.toFixed(3));
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.clearRect(0, 0, W, H);
+    if (!calm) {
+      acc += dt * 6; while (acc > 1) { acc -= 1; if (E.length < 46) spawn(); }
+      cx.globalCompositeOperation = "lighter";
+      for (let i = E.length - 1; i >= 0; i--) {
+        const p = E[i]; p.life += dt;
+        if (p.life > p.max) { E.splice(i, 1); continue; }
+        p.vx += Math.sin(t * 1.7 + p.ph) * 8 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vy *= 1 - 0.12 * dt;
+        const a = Math.sin(Math.PI * p.life / p.max) * (0.55 + 0.45 * vn(t * 6 + p.ph * 10));
+        cx.globalAlpha = a * 0.8; const s = p.s * 4;
+        cx.drawImage(sprite, p.x - s / 2, p.y - s / 2, s, s);
+      }
+      cx.globalAlpha = 1; cx.globalCompositeOperation = "source-over";
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+
+  // ---- the header and photos rise in as they arrive
+  const rises = [...document.querySelectorAll(".rise")];
+  if (!calm && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -6% 0px", threshold: 0.06 });
+    rises.forEach((el) => io.observe(el));
+  } else rises.forEach((el) => el.classList.add("in"));
+  const brand = document.getElementById("brand");
+  addEventListener("scroll", () => { brand.style.opacity = scrollY > innerHeight * 0.3 ? "0" : "1"; }, { passive: true });
+
+  // ---- full screen: click a photo; arrows, swipe or the buttons step through; Escape, Close or a click closes
+  const shots = [...document.querySelectorAll(".photo button")].map((b) => ({ b, src: b.dataset.full, cap: b.dataset.cap }));
+  const lb = document.getElementById("lightbox"), lbImg = document.getElementById("lbImg"), lbCap = document.getElementById("lbCap");
+  const prevB = document.getElementById("lbPrev"), nextB = document.getElementById("lbNext");
+  let k = 0, back = null;
+  function showShot() {
+    const s = shots[k];
+    lbImg.src = s.src; lbImg.alt = s.cap;
+    lbCap.innerHTML = s.cap + (shots.length > 1 ? `<span>${k + 1} / ${shots.length}</span>` : "");
+    prevB.hidden = nextB.hidden = shots.length < 2;
+    if (shots.length > 1) { new Image().src = shots[(k + 1) % shots.length].src; }
+  }
+  function openLb(i) { k = i; back = document.activeElement; showShot(); lb.hidden = false; document.body.style.overflow = "hidden"; requestAnimationFrame(() => lb.classList.add("on")); document.getElementById("lbClose").focus({ preventScroll: true }); }
+  function closeLb() {
+    if (lb.hidden) return;
+    lb.classList.remove("on"); document.body.style.overflow = "";
+    setTimeout(() => { if (!lb.classList.contains("on")) lb.hidden = true; }, 260);
+    if (back && back.focus) back.focus({ preventScroll: true });
+  }
+  const step = (d) => { k = (k + d + shots.length) % shots.length; showShot(); };
+  shots.forEach((s, i) => s.b.addEventListener("click", () => openLb(i)));
+  document.getElementById("lbClose").addEventListener("click", closeLb);
+  prevB.addEventListener("click", (e) => { e.stopPropagation(); step(-1); });
+  nextB.addEventListener("click", (e) => { e.stopPropagation(); step(1); });
+  let swiped = false;
+  lb.addEventListener("click", (e) => { if (swiped) { swiped = false; return; } if (e.target === lb || e.target === lbImg || e.target.tagName === "FIGURE") closeLb(); });
+  addEventListener("keydown", (e) => {
+    if (lb.hidden) return;
+    if (e.key === "Escape") { e.preventDefault(); closeLb(); }
+    else if ((e.key === "ArrowRight" || e.key === "ArrowLeft") && shots.length > 1) { e.preventDefault(); step(e.key === "ArrowRight" ? 1 : -1); }
+    else if (e.key === "Tab") {           // keep focus inside the full-screen view
+      const f = [...lb.querySelectorAll("button")].filter((b) => !b.hidden), i = f.indexOf(document.activeElement);
+      e.preventDefault(); f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+    }
+  });
+  let sx = null;
+  lb.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse") sx = e.clientX; });
+  lb.addEventListener("pointerup", (e) => { if (sx !== null && shots.length > 1 && Math.abs(e.clientX - sx) > 50) { swiped = true; step(e.clientX < sx ? 1 : -1); } sx = null; });
+})();
+</script>
+</body>
+</html>

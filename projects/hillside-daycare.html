@@ -4,6 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Hillside Daycare - Erick Sabando</title>
+<link rel="icon" href="../favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png" />
+<link rel="apple-touch-icon" href="../apple-touch-icon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -82,9 +85,14 @@
     main { padding-left: 1.25rem; padding-right: 1.25rem; }
   }
 
-  /* Minimal black arrowhead cursor (hotspot = tip) */
-  html, body { cursor: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2238%22 height=%2238%22 viewBox=%220 0 36 36%22%3E %3Cg transform=%22translate(-4 2) rotate(-40 12 1.5)%22%3E %3Cpath d=%22M12 1.5 L19.5 24.5 L12 19.7 L4.5 24.5 Z%22 fill=%22%230d0d0f%22/%3E %3C/g%3E %3C/svg%3E") 8 4, auto; }
-  a, button, [data-lightbox], .card, .shot, .project, label, summary { cursor: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2238%22 height=%2238%22 viewBox=%220 0 36 36%22%3E %3Cg transform=%22translate(-4 2) rotate(-40 12 1.5)%22%3E %3Cpath d=%22M12 1.5 L19.5 24.5 L12 19.7 L4.5 24.5 Z%22 fill=%22%230d0d0f%22/%3E %3C/g%3E %3C/svg%3E") 8 4, pointer; }
+  /* North-arrow cursor (after the arrow in the ES logo): solid black in neutral areas,
+     glowing white over anything clickable. Hotspot = arrow tip. */
+  :root {
+    --cur: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 L26.5 29 L16 21.5 L5.5 29 Z' fill='%230a0a0b' stroke='%23ffffff' stroke-opacity='0.85' stroke-width='1.1' stroke-linejoin='round'/%3E%3C/svg%3E") 16 3, auto;
+    --cur-hot: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 3 L26.5 29 L16 21.5 L5.5 29 Z' fill='none' stroke='%23ffffff' stroke-opacity='0.05' stroke-width='6.0' stroke-linejoin='round'/%3E%3Cpath d='M16 3 L26.5 29 L16 21.5 L5.5 29 Z' fill='none' stroke='%23ffffff' stroke-opacity='0.08' stroke-width='5.0' stroke-linejoin='round'/%3E%3Cpath d='M16 3 L26.5 29 L16 21.5 L5.5 29 Z' fill='none' stroke='%23ffffff' stroke-opacity='0.12' stroke-width='4.0' stroke-linejoin='round'/%3E%3Cpath d='M16 3 L26.5 29 L16 21.5 L5.5 29 Z' fill='none' stroke='%23ffffff' stroke-opacity='0.18' stroke-width='3.0' stroke-linejoin='round'/%3E%3Cpath d='M16 3 L26.5 29 L16 21.5 L5.5 29 Z' fill='none' stroke='%23ffffff' stroke-opacity='0.3' stroke-width='2.0' stroke-linejoin='round'/%3E%3Cpath d='M16 3 L26.5 29 L16 21.5 L5.5 29 Z' fill='%23ffffff' stroke='%231c1c20' stroke-opacity='0.6' stroke-width='0.8' stroke-linejoin='round'/%3E%3C/svg%3E") 16 3, pointer;
+  }
+  html, body { cursor: var(--cur); }
+  a, button, [role="button"], [data-lightbox], .card, .shot, .project, label, summary { cursor: var(--cur-hot); }
   input, textarea, select { cursor: auto; }
 </style>
 </head>
