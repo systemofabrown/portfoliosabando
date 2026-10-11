@@ -144,6 +144,14 @@ p { margin: 0 0 1em; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55); }
   #lbCap span { display: block; margin: 4px 0 0; }
   #lbPrev, #lbNext { top: auto; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: none; }
 }
+
+/* NK-TOUCH: finger-sized targets on touch screens */
+@media (any-pointer: coarse) { .lbBtn { min-height: 44px; } }
+</style>
+<style>
+/* NK-KIOSK: museum kiosk mode (only with ?kiosk, see the script at the end of the page) */
+html.nk-kiosk, html.nk-kiosk body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+html.nk-kiosk { overscroll-behavior: none; }
 </style>
 </head>
 <body>
@@ -374,6 +382,31 @@ p { margin: 0 0 1em; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55); }
   let sx = null;
   lb.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse") sx = e.clientX; });
   lb.addEventListener("pointerup", (e) => { if (sx !== null && shots.length > 1 && Math.abs(e.clientX - sx) > 50) { swiped = true; step(e.clientX < sx ? 1 : -1); } sx = null; });
+})();
+</script>
+<script>
+/* NK-KIOSK: museum kiosk mode. Open a page once with ?kiosk and this browser tab stays in kiosk mode (?kiosk=0 ends it).
+   Back to the landing page after 120 s without anyone touching the screen; no long-press menu or text selection. */
+(function () {
+  var KEY = "nkKiosk", on = false;
+  try {
+    var q = new URLSearchParams(location.search);
+    if (q.has("kiosk")) sessionStorage.setItem(KEY, q.get("kiosk") === "0" ? "0" : "1");
+    on = sessionStorage.getItem(KEY) === "1";
+  } catch (e) { on = /[?&]kiosk(=1)?(&|$)/.test(location.search); }
+  if (!on) return;
+  document.documentElement.classList.add("nk-kiosk");
+  addEventListener("contextmenu", function (e) { e.preventDefault(); }, true);
+  var IDLE = 120, last = Date.now();
+  ["pointerdown", "pointermove", "touchstart", "keydown", "wheel"].forEach(function (t) {
+    addEventListener(t, function () { last = Date.now(); }, { passive: true, capture: true });
+  });
+  setInterval(function () {
+    var playing = [].some.call(document.querySelectorAll("video"), function (v) {   // looping backgrounds do not count
+      return !v.paused && !v.ended && !v.loop && v.getClientRects().length > 0; });
+    if (playing) last = Date.now();
+    if (Date.now() - last > IDLE * 1000) location.href = "index.html?kiosk=1";
+  }, 2000);
 })();
 </script>
 </body>

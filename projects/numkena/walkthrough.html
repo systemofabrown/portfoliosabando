@@ -250,6 +250,23 @@ html.calm #wtVeil, html.calm .wtLbl, html.calm #wtHint, html.calm #wtGlint, html
   #lbCap span { display: block; margin: 4px 0 0; }
   #lbPrev, #lbNext { top: auto; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: none; }
 }
+
+/* NK-TOUCH: finger-sized targets on touch screens (44 px, the usual minimum) */
+@media (any-pointer: coarse) {
+  #top button, #top a.btn { min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center; }
+  #card .cClose { min-width: 44px; min-height: 44px; display: grid; place-items: center; }
+  /* the model's labels let every touch through to the model, so a pinch or swipe that starts on a label still works;
+     a tap near a label still opens its card (NK-TOUCH script in the model's tap handler) */
+  .lbl { pointer-events: none; }
+  #lbClose, .modes button, #wtClose { min-height: 44px; }
+}
+/* NK-TOUCH: short landscape screens (phones turned sideways): the title ran into the top buttons */
+@media (max-height: 500px) { #title { display: none; } }
+</style>
+<style>
+/* NK-KIOSK: museum kiosk mode (only with ?kiosk, see the script at the end of the page) */
+html.nk-kiosk, html.nk-kiosk body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+html.nk-kiosk { overscroll-behavior: none; }
 </style>
 </head>
 <body>
@@ -2294,6 +2311,12 @@ canvas.addEventListener("pointerup", (e) => {
   if (phase !== "model" || !downAt) return;
   const moved = Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]), dt = performance.now() - downAt[2]; downAt = null;
   if (moved > 6 || dt > 600) return;
+  // NK-TOUCH: labels are not touch targets on touch screens (they swallowed pinches); a tap within reach of one opens it
+  if (document.getElementById("labels").classList.contains("on")) {
+    const near = [...document.querySelectorAll(".lbl")].find((l) => { const r = l.getBoundingClientRect();
+      return r.width > 0 && e.clientX > r.left - 8 && e.clientX < r.right + 8 && e.clientY > r.top - 14 && e.clientY < r.bottom + 14; });
+    if (near) { near.click(); return; }
+  }
   const c = pick(e);
   if (c >= 0) openCard(c, e.clientX, e.clientY); else closeCard();
 });
@@ -2614,7 +2637,8 @@ const WallToc = (() => {
           }
         });
         const clash = pos.some((p) => p.x + p.w / 2 + p.cw / 2 > wm[0] - 4 && p.y + p.h + labH > wm[1] - 4);
-        const score = gw * (clash ? 0.5 : 1);
+        const tight = cw < Math.max(110, fs * 8.5);   // NK-TOUCH: one long row on a short landscape phone made the labels overlap
+        const score = gw * (clash ? 0.5 : 1) * (tight ? 0.3 : 1);
         if (!best || score > best.score + 0.5) best = { score, pos };
       }
       if (best && best.score >= best.pos[0].w) break;
@@ -3459,7 +3483,7 @@ function tick(now) {
 }
 
 // ---------------------------------------------------------------- go
-if (matchMedia("(pointer: coarse)").matches) ui.hint.textContent = "Swipe to look around \u00b7 pinch to zoom \u00b7 tap a piece";
+if (matchMedia("(pointer: coarse)").matches) { ui.hint.textContent = "Swipe to look around \u00b7 pinch to zoom \u00b7 tap a piece"; $("cardRenHead").lastElementChild.textContent = "Tap to enlarge"; }   // NK-TOUCH
 { // phones held upright during the film: a short suggestion to turn sideways, gone after 7 s or as soon as the phone turns
   const rot = $("rotate"), up = matchMedia("(orientation: portrait)");
   if (matchMedia("(pointer: coarse)").matches && up.matches && !HASH.includes("model") && !calm) {
@@ -3486,6 +3510,31 @@ requestAnimationFrame(tick);
 window.__wt = { next, prev, goStop, setMode, get held() { return held; }, get target() { return target; }, get viewMode() { return viewMode; }, mark: () => mark.getBoundingClientRect(), get markLive() { return markLive; }, get phase() { return phase; }, get p() { return p; }, setState, toModel, camera, controls,
   lock(F) { p = Math.min(1, Math.max(0, (F - X0) / (NS - 1))); const c = filmCam(F); placeCamera(c.target, c.az, c.tilt, c.zoom); pose(p, F);
             post.uniforms.uCoc.value = COC_FILM * cocScale(); post.uniforms.uVig.value = 1; render(); } };
+})();
+</script>
+<script>
+/* NK-KIOSK: museum kiosk mode. Open a page once with ?kiosk and this browser tab stays in kiosk mode (?kiosk=0 ends it).
+   Back to the landing page after 120 s without anyone touching the screen; no long-press menu or text selection. */
+(function () {
+  var KEY = "nkKiosk", on = false;
+  try {
+    var q = new URLSearchParams(location.search);
+    if (q.has("kiosk")) sessionStorage.setItem(KEY, q.get("kiosk") === "0" ? "0" : "1");
+    on = sessionStorage.getItem(KEY) === "1";
+  } catch (e) { on = /[?&]kiosk(=1)?(&|$)/.test(location.search); }
+  if (!on) return;
+  document.documentElement.classList.add("nk-kiosk");
+  addEventListener("contextmenu", function (e) { e.preventDefault(); }, true);
+  var IDLE = 120, last = Date.now();
+  ["pointerdown", "pointermove", "touchstart", "keydown", "wheel"].forEach(function (t) {
+    addEventListener(t, function () { last = Date.now(); }, { passive: true, capture: true });
+  });
+  setInterval(function () {
+    var playing = [].some.call(document.querySelectorAll("video"), function (v) {   // looping backgrounds do not count
+      return !v.paused && !v.ended && !v.loop && v.getClientRects().length > 0; });
+    if (playing) last = Date.now();
+    if (Date.now() - last > IDLE * 1000) location.href = "index.html?kiosk=1";
+  }, 2000);
 })();
 </script>
 </body>

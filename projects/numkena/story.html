@@ -217,6 +217,14 @@ figcaption { margin-top: 10px; font-family: var(--carve); font-size: 11px; lette
   .dw p { font-size: 13px; }
   .end .go .btn { width: 100%; }
 }
+
+/* NK-TOUCH: finger-sized targets on touch screens */
+@media (any-pointer: coarse) { .scrollcue { padding: 12px 0; } #rail a { padding: 12px 0; } }
+</style>
+<style>
+/* NK-KIOSK: museum kiosk mode (only with ?kiosk, see the script at the end of the page) */
+html.nk-kiosk, html.nk-kiosk body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+html.nk-kiosk { overscroll-behavior: none; }
 </style>
 </head>
 <body>
@@ -412,6 +420,31 @@ figcaption { margin-top: 10px; font-family: var(--carve); font-size: 11px; lette
     brand.style.opacity = scrollY > innerHeight * 0.6 ? "0" : "1";
   }
   addEventListener("scroll", onScroll, { passive: true }); onScroll();
+})();
+</script>
+<script>
+/* NK-KIOSK: museum kiosk mode. Open a page once with ?kiosk and this browser tab stays in kiosk mode (?kiosk=0 ends it).
+   Back to the landing page after 120 s without anyone touching the screen; no long-press menu or text selection. */
+(function () {
+  var KEY = "nkKiosk", on = false;
+  try {
+    var q = new URLSearchParams(location.search);
+    if (q.has("kiosk")) sessionStorage.setItem(KEY, q.get("kiosk") === "0" ? "0" : "1");
+    on = sessionStorage.getItem(KEY) === "1";
+  } catch (e) { on = /[?&]kiosk(=1)?(&|$)/.test(location.search); }
+  if (!on) return;
+  document.documentElement.classList.add("nk-kiosk");
+  addEventListener("contextmenu", function (e) { e.preventDefault(); }, true);
+  var IDLE = 120, last = Date.now();
+  ["pointerdown", "pointermove", "touchstart", "keydown", "wheel"].forEach(function (t) {
+    addEventListener(t, function () { last = Date.now(); }, { passive: true, capture: true });
+  });
+  setInterval(function () {
+    var playing = [].some.call(document.querySelectorAll("video"), function (v) {   // looping backgrounds do not count
+      return !v.paused && !v.ended && !v.loop && v.getClientRects().length > 0; });
+    if (playing) last = Date.now();
+    if (Date.now() - last > IDLE * 1000) location.href = "index.html?kiosk=1";
+  }, 2000);
 })();
 </script>
 </body>
